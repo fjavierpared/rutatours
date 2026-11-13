@@ -1,0 +1,312 @@
+<div class="manual">
+    <!-- ÍNDICE -->
+    <nav class="manual-indice" id="manual-indice" aria-label="Contenido del manual">
+        <div class="manual-indice-cabecera">
+            <strong>Contenido</strong>
+            <button type="button" class="btn btn-secundario btn-chico" id="manual-imprimir"><svg class="icon"><use href="img/icons.svg#i-file-text"></use></svg>Imprimir / PDF</button>
+        </div>
+        <ol>
+            <li><a href="#m-intro">Qué es RutaTours</a></li>
+            <li><a href="#m-primeros">Primeros pasos</a></li>
+            <li><a href="#m-inicio">Inicio</a></li>
+            <li><a href="#m-rutas">Rutas</a>
+                <ol>
+                    <li><a href="#m-rutas-datos">Datos y fechas</a></li>
+                    <li><a href="#m-rutas-recorrido">Recorrido</a></li>
+                    <li><a href="#m-rutas-costos">Costos</a></li>
+                    <li><a href="#m-rutas-cargos">Ganancia e impuestos</a></li>
+                    <li><a href="#m-rutas-ficha">Ficha e imágenes</a></li>
+                    <li><a href="#m-rutas-activar">Activar la ruta</a></li>
+                    <li><a href="#m-rutas-cotizador">Cotizador interno</a></li>
+                </ol>
+            </li>
+            <li><a href="#m-precio">Cómo se calcula el precio</a></li>
+            <li><a href="#m-recursos">Guías y vehículos</a></li>
+            <li><a href="#m-reservas">Reservas</a></li>
+            <li><a href="#m-pagos">Pagos</a></li>
+            <li><a href="#m-clientes">Clientes</a></li>
+            <li><a href="#m-tasa">Tasa BCV</a></li>
+            <li><a href="#m-metodos">Métodos de pago</a></li>
+            <li><a href="#m-sistema">Usuarios y configuración</a></li>
+            <li><a href="#m-portal">Portal del cliente</a></li>
+            <li><a href="#m-faq">Preguntas frecuentes</a></li>
+            <li><a href="#m-tecnico">Información técnica</a></li>
+        </ol>
+    </nav>
+
+    <!-- CONTENIDO -->
+    <article class="manual-cuerpo" id="manual-cuerpo">
+        <header class="manual-portada">
+            <span class="manual-sello"><svg class="icon"><use href="img/icons.svg#i-map"></use></svg></span>
+            <div>
+                <h1>Manual de usuario de <span data-nombre-sistema>RutaTours</span></h1>
+                <p>Sistema de gestión y reservas de rutas turísticas · Panel de administración y portal del cliente</p>
+            </div>
+        </header>
+
+        <!-- 1 -->
+        <section id="m-intro">
+            <h2><span class="num">1</span>Qué es RutaTours</h2>
+            <p>RutaTours organiza todo el ciclo de un plan turístico: se diseña la ruta con su recorrido y sus costos, el sistema calcula el precio, el cliente reserva desde internet, reporta sus pagos y el equipo los verifica.</p>
+            <div class="manual-tarjetas">
+                <div><h4><svg class="icon"><use href="img/icons.svg#i-shield"></use></svg>Panel de administración</h4>
+                    <p>Para el equipo de la agencia. Dirección: <code>http://servidor:3000/admin</code>. Lo usan los <strong>administradores</strong> y <strong>operadores</strong>, con el mismo acceso a todos los módulos salvo <em>Usuarios</em> y <em>Configuración</em>, que son solo del administrador.</p></div>
+                <div><h4><svg class="icon"><use href="img/icons.svg#i-users"></use></svg>Portal del cliente</h4>
+                    <p>Para los viajeros. Es la página principal: <code>http://servidor:3000/</code>. El cliente ve los planes, calcula el precio, crea su cuenta, reserva y reporta pagos. Nunca ve costos internos ni la ganancia.</p></div>
+            </div>
+            <h3>Conceptos clave</h3>
+            <dl class="manual-glosario">
+                <dt>Ruta o plan</dt><dd>Un viaje que se ofrece: recorrido, duración, costos y condiciones.</dd>
+                <dt>Grupo privado</dt><dd>Cada reserva ocupa la ruta con su guía y su vehículo <strong>todos los días del viaje</strong>. Dos reservas no pueden usar el mismo guía o vehículo en fechas que se cruzan.</dd>
+                <dt>Abono</dt><dd>Porcentaje del total (configurable por ruta, por ejemplo 50%) que el cliente debe pagar para confirmar la reserva.</dd>
+                <dt>Tasa BCV</dt><dd>Tasa oficial del dólar del Banco Central de Venezuela. Los precios se fijan en dólares y se convierten a bolívares con la tasa vigente.</dd>
+                <dt>IGTF</dt><dd>Impuesto del 3% a los pagos en divisas. Solo se suma cuando el cliente paga con un método en divisas (Zelle, efectivo en dólares, USDT...).</dd>
+            </dl>
+        </section>
+
+        <!-- 2 -->
+        <section id="m-primeros">
+            <h2><span class="num">2</span>Primeros pasos</h2>
+            <p>Antes de recibir reservas, configure el sistema en este orden:</p>
+            <ol class="manual-pasos">
+                <li><strong>Cambie la clave del administrador.</strong> El sistema crea el usuario <code>admin</code> con clave <code>admin123</code> la primera vez. Cámbiela en <a href="#usuarios">Usuarios</a>.</li>
+                <li><strong>Revise la Configuración:</strong> nombre del sistema, colores y redondeo de precios.</li>
+                <li><strong>Cargue la tasa BCV</strong> en <a href="#tasa">Tasa BCV</a> con el botón «Actualizar desde el BCV».</li>
+                <li><strong>Complete los métodos de pago</strong> con sus datos reales (banco, teléfono, correo de Zelle...).</li>
+                <li><strong>Registre guías y vehículos</strong> con sus costos por día y la capacidad de cada vehículo.</li>
+                <li><strong>Cree sus rutas</strong>, revise el precio con el cotizador interno y actívelas.</li>
+                <li>Abra el portal del cliente y haga una <strong>reserva de prueba</strong> para ver el flujo completo.</li>
+            </ol>
+            <div class="manual-nota"><svg class="icon"><use href="img/icons.svg#i-info"></use></svg><p>Cada mañana actualice la tasa BCV antes de verificar pagos en bolívares. El Inicio le avisa cuando la tasa no corresponde a hoy.</p></div>
+        </section>
+
+        <!-- 3 -->
+        <section id="m-inicio">
+            <h2><span class="num">3</span>Inicio</h2>
+            <p>Resumen del día: rutas activas, salidas próximas, pagos por verificar, clientes registrados y la tasa BCV vigente. Cada tarjeta lleva a su módulo. Debajo aparecen avisos (tasa vieja, pagos esperando) y las próximas salidas.</p>
+            <figure><img src="img/manual/inicio.jpg" alt="Módulo Inicio con indicadores y próximas salidas"><figcaption>Inicio: indicadores, avisos y próximas salidas.</figcaption></figure>
+        </section>
+
+        <!-- 4 -->
+        <section id="m-rutas">
+            <h2><span class="num">4</span>Rutas</h2>
+            <p>El listado muestra cada ruta con su duración, cupo, guía, vehículo, cantidad de paradas, reservas y estado. Desde las acciones puede <strong>editar</strong>, <strong>activar/desactivar</strong> o <strong>eliminar</strong> (solo si no tiene reservas; si las tiene, desactívela).</p>
+            <figure><img src="img/manual/rutas.jpg" alt="Listado de rutas"><figcaption>Listado de rutas. «Nueva ruta» abre el editor vacío.</figcaption></figure>
+            <p>El editor se divide en secciones. Los cambios se guardan todos juntos con <strong>Guardar ruta</strong>; mientras haya cambios pendientes verá la marca «Cambios sin guardar».</p>
+            <figure><img src="img/manual/editor.jpg" alt="Editor de rutas: estado y datos generales"><figcaption>Editor: estado, requisitos para activar y datos generales.</figcaption></figure>
+
+            <h3 id="m-rutas-datos">Datos generales, capacidad y fechas</h3>
+            <table class="manual-tabla">
+                <tr><th>Campo</th><th>Para qué sirve</th></tr>
+                <tr><td>Días / noches</td><td>Duración. Una ruta de 2 días que sale el 14 regresa el 15.</td></tr>
+                <tr><td>Guía y vehículo</td><td>Quedan ocupados todos los días de cada reserva.</td></tr>
+                <tr><td>Mínimo / máximo de personas</td><td>El máximo no puede superar la capacidad del vehículo ni el cupo de habitaciones.</td></tr>
+                <tr><td>Abono para reservar (%)</td><td>Lo que el cliente debe pagar para confirmar. Con 50% y un total de 892 $, el abono es 446 $.</td></tr>
+                <tr><td>Días de anticipación</td><td>Mínimo de días entre hoy y la salida. Con 3, hoy jueves solo puede reservar desde el domingo.</td></tr>
+                <tr><td>Disponible desde / hasta</td><td>Temporada de la ruta (opcional). El regreso debe quedar dentro del rango.</td></tr>
+                <tr><td>Días de salida permitidos</td><td>Por ejemplo, solo sábados y domingos. Sin marcar ninguno, sale cualquier día.</td></tr>
+            </table>
+
+            <h3 id="m-rutas-recorrido">Recorrido: paradas y actividades</h3>
+            <p>Agregue las paradas <strong>en orden</strong>, cada una con su día, hora, tipo (salida, embarque, visita, comida, alojamiento, retorno, llegada) y una descripción para el cliente. Use las flechas para reordenar. Dentro de cada parada puede agregar actividades con su hora; si una actividad ocurre otro día (el desayuno del día 2 en el hotel donde se llegó el día 1), elija ese día.</p>
+            <p>El diagrama se actualiza mientras escribe: <strong>un color por día</strong>, la hora debajo de cada parada y, si la última parada es el mismo lugar que la salida, se dibuja como <strong>circuito</strong> con una línea punteada de retorno.</p>
+            <figure><img src="img/manual/recorrido.jpg" alt="Recorrido con diagrama y paradas"><figcaption>Recorrido: diagrama automático y lista de paradas con sus actividades.</figcaption></figure>
+
+            <h3 id="m-rutas-costos">Costos</h3>
+            <p>Todos los costos se cargan en dólares y hay tres tipos:</p>
+            <ul>
+                <li><strong>Grupo:</strong> se paga una vez sin importar cuántos viajen (transporte, guía, permisos, botiquín).</li>
+                <li><strong>Por persona:</strong> se multiplica por la cantidad de personas (entradas, comidas, seguro).</li>
+                <li><strong>Unidad (cupo):</strong> cosas que se compran por unidades con capacidad, como habitaciones. Las filas con la <em>misma categoría</em> son alternativas y el sistema elige la <strong>combinación más barata</strong> que alcance, respetando las unidades disponibles. Ejemplo: para 10 personas con 2 cuádruples (60 $) y 1 doble (45 $) elige 2 cuádruples + 1 doble = 165 $.</li>
+            </ul>
+            <p>El botón <strong>«Agregar costos del guía y del vehículo»</strong> suma como costos de grupo el costo por día del guía, del transporte y del combustible multiplicado por los días de la ruta.</p>
+            <figure><img src="img/manual/costos.jpg" alt="Tabla de costos de la ruta"><figcaption>Costos de grupo, por unidad (habitaciones) y por persona.</figcaption></figure>
+
+            <h3 id="m-rutas-cargos">Ganancia e impuestos</h3>
+            <p>Los cargos son porcentajes que se aplican <strong>en orden</strong>:</p>
+            <table class="manual-tabla">
+                <tr><th>Opción</th><th>Significado</th></tr>
+                <tr><td>Tipo: ganancia</td><td>El cliente no la ve: queda dentro de la línea «Servicio».</td></tr>
+                <tr><td>Tipo: impuesto</td><td>El cliente la ve como línea aparte (por ejemplo «IVA (16%)»).</td></tr>
+                <tr><td>Base: sobre el costo</td><td>El porcentaje se calcula sobre el costo del grupo.</td></tr>
+                <tr><td>Base: sobre el acumulado</td><td>Se calcula sobre el costo más los cargos anteriores. Así el IVA se cobra sobre costo + ganancia.</td></tr>
+                <tr><td>Aplica: siempre</td><td>Entra en el precio publicado.</td></tr>
+                <tr><td>Aplica: solo pago en divisas</td><td>No entra en el precio: se suma al pagar, sobre el monto pagado, solo si el método aplica IGTF.</td></tr>
+            </table>
+            <p>Configuración recomendada: <strong>Ganancia 25% sobre el costo</strong> → <strong>IVA 16% sobre el acumulado</strong> → <strong>IGTF 3% solo pago en divisas</strong>. Es la que trae una ruta nueva.</p>
+
+            <h3 id="m-rutas-ficha">Ficha para el cliente e imágenes</h3>
+            <p>Escriba qué <strong>incluye</strong>, qué <strong>no incluye</strong> y las <strong>recomendaciones</strong>. Después de guardar la ruta podrá subir hasta 10 imágenes JPG, PNG o WEBP de hasta 2 MB; la primera es la portada del catálogo.</p>
+
+            <h3 id="m-rutas-activar">Activar la ruta</h3>
+            <p>Una ruta nueva queda como <strong>borrador</strong>. Para activarla debe tener al menos 2 paradas, costos, guía y vehículo, y un máximo de personas que quepa en el vehículo y en las habitaciones. La sección «Estado de la ruta» lista lo que falta. Con <strong>Reservas: pausada</strong> la ruta sigue visible pero no acepta reservas nuevas.</p>
+
+            <h3 id="m-rutas-cotizador">Cotizador interno</h3>
+            <p>Calcula el precio con la versión <strong>guardada</strong> de la ruta y muestra el desglose completo que solo ve el equipo: costos, unidades elegidas, ganancia, impuestos y ajuste por redondeo; al lado, lo que verá el cliente. «Precios por cantidad de personas» arma la tabla para todo el rango de personas.</p>
+            <figure><img src="img/manual/cotizador.jpg" alt="Cotizador interno con desglose"><figcaption>Desglose interno (izquierda) y vista del cliente (derecha).</figcaption></figure>
+            <figure><img src="img/manual/tabla-precios.jpg" alt="Tabla de precios por cantidad de personas"><figcaption>Mientras más personas, menor precio por persona: los costos de grupo se reparten.</figcaption></figure>
+        </section>
+
+        <!-- 5 -->
+        <section id="m-precio">
+            <h2><span class="num">5</span>Cómo se calcula el precio</h2>
+            <div class="manual-formula">
+                <div><span>1</span><p><strong>Costo del grupo</strong> = costos de grupo + habitaciones elegidas + costos por persona × personas</p></div>
+                <div><span>2</span><p><strong>Cargos en orden</strong>: ganancia, IVA... cada uno sobre el costo o sobre el acumulado</p></div>
+                <div><span>3</span><p><strong>Precio por persona</strong> = total ÷ personas, redondeado según Configuración</p></div>
+                <div><span>4</span><p><strong>Total del grupo</strong> = precio por persona × personas · <strong>Abono</strong> = total × % de abono</p></div>
+            </div>
+            <h3>Ejemplo: Eje Panamericano, 10 personas</h3>
+            <table class="manual-tabla manual-numeros">
+                <tr><td>Costos de grupo (transporte, guía, botiquín)</td><td>270,00 $</td></tr>
+                <tr><td>Habitaciones: 2 cuádruples + 1 doble</td><td>165,00 $</td></tr>
+                <tr><td>Costos por persona: 18,00 $ × 10</td><td>180,00 $</td></tr>
+                <tr class="total"><td>Costo del grupo (61,50 $ por persona)</td><td>615,00 $</td></tr>
+                <tr><td>Ganancia 25% sobre el costo</td><td>153,75 $</td></tr>
+                <tr><td>IVA 16% sobre costo + ganancia</td><td>123,00 $</td></tr>
+                <tr class="total"><td>Total sin redondeo (89,175 $ por persona)</td><td>891,75 $</td></tr>
+                <tr><td>Precio por persona redondeado hacia arriba a 0,10 $</td><td>89,20 $</td></tr>
+                <tr class="total"><td>Total del grupo (89,20 $ × 10)</td><td>892,00 $</td></tr>
+                <tr><td>Abono del 50%</td><td>446,00 $</td></tr>
+                <tr><td>Pagando todo en divisas (+ IGTF 3%)</td><td>918,76 $</td></tr>
+            </table>
+            <div class="manual-nota"><svg class="icon"><use href="img/icons.svg#i-info"></use></svg><p>Todos los cálculos se hacen en centavos enteros para evitar errores de redondeo. Al reservar, el precio en dólares <strong>queda congelado</strong> en la reserva: si después cambia un costo, las reservas existentes no cambian.</p></div>
+        </section>
+
+        <!-- 6 -->
+        <section id="m-recursos">
+            <h2><span class="num">6</span>Guías y vehículos</h2>
+            <p>Registre a cada guía (documento, contacto, idiomas, licencia, costo por día) y cada vehículo (placa, tipo, capacidad, costos de transporte y combustible por día). Dos indicadores controlan su uso:</p>
+            <ul>
+                <li><strong>Estado activo / inactivo:</strong> dado de alta o de baja.</li>
+                <li><strong>Disponible / no disponible:</strong> temporalmente fuera de servicio (vacaciones, taller). Mientras no esté disponible, sus rutas no aceptan reservas.</li>
+            </ul>
+            <p>Un guía o vehículo con reservas no se puede eliminar: márquelo como inactivo. No puede bajar la capacidad de un vehículo por debajo del máximo de personas de sus rutas.</p>
+            <figure><img src="img/manual/vehiculos.jpg" alt="Módulo de vehículos"><figcaption>Vehículos: formulario a la izquierda y listado a la derecha (Guías funciona igual).</figcaption></figure>
+        </section>
+
+        <!-- 7 -->
+        <section id="m-reservas">
+            <h2><span class="num">7</span>Reservas</h2>
+            <p>Lista todas las reservas con filtros por estado y rango de fechas, y un buscador por cliente, ruta, guía o placa. El estado cambia solo según los pagos verificados:</p>
+            <div class="manual-estados">
+                <div><span class="badge badge-aviso">Pendiente de abono</span><p>Recién creada. Ya ocupa el guía y el vehículo en esas fechas.</p></div>
+                <div><span class="badge badge-info">Reservada</span><p>Los pagos verificados alcanzan el abono mínimo.</p></div>
+                <div><span class="badge badge-ok">Pagada</span><p>Los pagos verificados cubren el total.</p></div>
+                <div><span class="badge badge-neutro">Completada</span><p>El viaje se realizó (se marca a mano).</p></div>
+                <div><span class="badge badge-off">Cancelada</span><p>Libera el guía y el vehículo. Los pagos pendientes pasan a rechazados.</p></div>
+            </div>
+            <figure><img src="img/manual/reservas.jpg" alt="Listado de reservas"><figcaption>Reservas con lo pagado, lo que está por verificar y el saldo.</figcaption></figure>
+            <p>El botón <strong>Ver detalle</strong> muestra los datos del cliente, sus notas, la cotización congelada (con la ganancia incluida, solo visible aquí) y los pagos. Desde allí se marca como <strong>completada</strong> o se <strong>cancela</strong>. Los reembolsos se gestionan fuera del sistema.</p>
+            <figure><img src="img/manual/reserva-detalle.jpg" alt="Detalle de una reserva"><figcaption>Detalle de la reserva.</figcaption></figure>
+        </section>
+
+        <!-- 8 -->
+        <section id="m-pagos">
+            <h2><span class="num">8</span>Pagos</h2>
+            <p>El cliente reporta cada pago con método, referencia, monto y, si quiere, una foto del comprobante. Usted confirma en su banco que el dinero llegó y lo <strong>verifica</strong> (✓) o lo <strong>rechaza</strong> (✗, con un motivo que verá el cliente).</p>
+            <p>La columna <strong>«Debe recibir»</strong> indica exactamente qué buscar en su cuenta:</p>
+            <ul>
+                <li><strong>Método en bolívares:</strong> el monto en Bs calculado con la tasa BCV del momento en que el cliente reportó el pago.</li>
+                <li><strong>Método en divisas:</strong> el monto en dólares, ya con el IGTF sumado. Ejemplo: abono de 200 $ + IGTF 6 $ = 206 $.</li>
+            </ul>
+            <figure><img src="img/manual/pagos.jpg" alt="Pagos por verificar"><figcaption>Pagos por verificar. Al verificar, el sistema recalcula el estado de la reserva.</figcaption></figure>
+            <div class="manual-nota"><svg class="icon"><use href="img/icons.svg#i-triangle-alert"></use></svg><p>Lo que se abona a la reserva es el monto sin IGTF: el IGTF es un impuesto, no un abono. Una reserva de 892 $ queda pagada con 892 $ abonados aunque el cliente haya pagado 918,76 $ en divisas.</p></div>
+        </section>
+
+        <!-- 9 -->
+        <section id="m-clientes">
+            <h2><span class="num">9</span>Clientes</h2>
+            <p>Los clientes se registran solos desde el portal. Aquí ve sus datos de contacto y cuántas reservas tienen. Desactivar a un cliente le impide iniciar sesión, pero conserva sus reservas.</p>
+            <figure><img src="img/manual/clientes.jpg" alt="Listado de clientes"><figcaption>Clientes registrados en el portal.</figcaption></figure>
+        </section>
+
+        <!-- 10 -->
+        <section id="m-tasa">
+            <h2><span class="num">10</span>Tasa BCV</h2>
+            <p><strong>«Actualizar desde el BCV»</strong> lee el valor del dólar publicado en <code>bcv.org.ve</code> junto con su fecha valor. La tasa vigente es siempre el último registro, y el historial muestra la variación entre registros.</p>
+            <ul>
+                <li>Si la lectura automática falla (el sitio no responde o cambió su formato), use la <strong>carga manual</strong> con el valor publicado por el BCV.</li>
+                <li>Si la nueva tasa varía más de un <strong>30%</strong> respecto a la vigente, el sistema pide confirmación para evitar errores de digitación.</li>
+                <li>Cada pago guarda la tasa con la que se calculó, así que cambiar la tasa no altera los pagos ya reportados.</li>
+            </ul>
+            <figure><img src="img/manual/tasa.jpg" alt="Módulo de tasa BCV"><figcaption>Tasa vigente, carga manual e historial.</figcaption></figure>
+        </section>
+
+        <!-- 11 -->
+        <section id="m-metodos">
+            <h2><span class="num">11</span>Métodos de pago</h2>
+            <p>Defina las formas de pago que verá el cliente: nombre, moneda (bolívares o divisas), si aplica IGTF y los <strong>datos para pagar</strong> (banco, teléfono, cédula, correo de Zelle, billetera...). Un método con pagos registrados no se elimina: desactívelo.</p>
+            <figure><img src="img/manual/metodos.jpg" alt="Métodos de pago"><figcaption>Métodos de pago y sus datos.</figcaption></figure>
+        </section>
+
+        <!-- 12 -->
+        <section id="m-sistema">
+            <h2><span class="num">12</span>Usuarios y configuración</h2>
+            <p><strong>Usuarios</strong> (solo administrador): cree cuentas para su equipo con rol <em>administrador</em> u <em>operador</em>, cambie claves o desactive el acceso.</p>
+            <p><strong>Configuración</strong> (solo administrador): nombre del sistema, colores (se aplican también al portal del cliente) y el <strong>redondeo del precio por persona</strong>:</p>
+            <ul>
+                <li><strong>Hacia arriba</strong> (recomendado): 89,175 $ → 89,20 $ con paso de 0,10 $.</li>
+                <li><strong>Al más cercano:</strong> 89,175 $ → 89,20 $; 89,14 $ → 89,10 $.</li>
+                <li><strong>Sin redondeo:</strong> al centavo.</li>
+            </ul>
+            <figure><img src="img/manual/configuracion.jpg" alt="Configuración con redondeo"><figcaption>Configuración: paleta de colores y redondeo con ejemplo en vivo.</figcaption></figure>
+        </section>
+
+        <!-- 13 -->
+        <section id="m-portal">
+            <h2><span class="num">13</span>Portal del cliente</h2>
+            <p>Así recorre el sistema un cliente:</p>
+            <ol class="manual-pasos">
+                <li><strong>Catálogo:</strong> ve los planes activos con su precio «desde» en dólares y bolívares, sin necesidad de cuenta.</li>
+                <li><strong>Ficha del plan:</strong> galería, diagrama del recorrido, itinerario por día y qué incluye. La calculadora muestra el precio según cuántos viajan, con un desplegable que explica cómo se calcula.</li>
+                <li><strong>Reserva:</strong> elige la fecha (el sistema respeta anticipación, días de salida y temporada). Si no tiene cuenta, se registra y la reserva se completa sin perder lo elegido.</li>
+                <li><strong>Pago:</strong> elige el método, ve los datos para pagar y el monto exacto (Bs con la tasa del día o dólares con IGTF), escribe la referencia y adjunta el comprobante.</li>
+                <li><strong>Mis reservas:</strong> sigue el estado y el saldo de cada reserva. Puede cancelar mientras esté pendiente de abono.</li>
+            </ol>
+            <div class="manual-galeria">
+                <figure><img src="img/manual/portal-catalogo.jpg" alt="Catálogo del portal"><figcaption>Catálogo.</figcaption></figure>
+                <figure><img src="img/manual/portal-ficha.jpg" alt="Ficha del plan con calculadora"><figcaption>Ficha con calculadora.</figcaption></figure>
+                <figure><img src="img/manual/portal-pago.jpg" alt="Reporte de pago"><figcaption>Reporte de pago con el monto en Bs.</figcaption></figure>
+                <figure><img src="img/manual/portal-reservas.jpg" alt="Mis reservas"><figcaption>Mis reservas.</figcaption></figure>
+            </div>
+            <p>El portal se adapta al celular. La sección «¿Cómo funciona?» le explica al cliente la tasa BCV, el IGTF y cómo leer el diagrama.</p>
+        </section>
+
+        <!-- 14 -->
+        <section id="m-faq">
+            <h2><span class="num">14</span>Preguntas frecuentes</h2>
+            <details><summary>Un cliente dice que no puede reservar una fecha.</summary>
+                <p>Revise: anticipación mínima, días de salida permitidos, temporada (desde/hasta), que la ruta esté activa con reservas habilitadas y que el guía y el vehículo estén disponibles. Si otra reserva ya ocupa el guía o el vehículo en esas fechas, el sistema la rechaza: es el comportamiento esperado de un grupo privado.</p></details>
+            <details><summary>Una reserva en «Pendiente de abono» nunca se pagó.</summary>
+                <p>Mientras no se cancele, mantiene ocupados el guía y el vehículo. Cancélela desde Reservas → Ver detalle → Cancelar reserva.</p></details>
+            <details><summary>El monto en bolívares que pagó el cliente no coincide.</summary>
+                <p>Cada pago muestra la tasa usada y el monto en Bs calculado al reportarlo. Si el cliente pagó otro día con otra tasa, puede rechazar el pago indicando el motivo para que lo reporte de nuevo con el monto correcto.</p></details>
+            <details><summary>Cambié un costo y el precio de una reserva no cambió.</summary>
+                <p>Es correcto: la cotización se congela al reservar. Los cambios aplican a las reservas nuevas.</p></details>
+            <details><summary>«Actualizar desde el BCV» da error.</summary>
+                <p>El sitio del BCV a veces no responde o publica un certificado de seguridad incompleto. Use la carga manual con el valor publicado y vuelva a intentarlo más tarde.</p></details>
+            <details><summary>No puedo activar una ruta.</summary>
+                <p>La sección «Estado de la ruta» del editor lista lo que falta: paradas, costos, guía, vehículo o un máximo de personas mayor que la capacidad del vehículo o de las habitaciones.</p></details>
+            <details><summary>No puedo eliminar un guía, vehículo, ruta o método de pago.</summary>
+                <p>Tiene reservas o pagos asociados y se conservan como historial. Márquelo como inactivo.</p></details>
+        </section>
+
+        <!-- 15 -->
+        <section id="m-tecnico">
+            <h2><span class="num">15</span>Información técnica</h2>
+            <table class="manual-tabla">
+                <tr><th>Tema</th><th>Detalle</th></tr>
+                <tr><td>Tecnología</td><td>Node.js 22 + Express 5, MySQL 8, HTML/CSS/JavaScript sin frameworks.</td></tr>
+                <tr><td>Iniciar</td><td><code>cd backend</code> y <code>npm start</code> (o <code>npm run dev</code> para reiniciar al guardar cambios). Detener con Ctrl + C.</td></tr>
+                <tr><td>Direcciones</td><td>Catálogo para los clientes: <code>http://localhost:3000/</code> · Panel del personal: <code>http://localhost:3000/admin</code>. El pie del catálogo tiene el enlace «Acceso del personal».</td></tr>
+                <tr><td>Configuración</td><td>Archivo <code>backend/.env</code>: credenciales de MySQL, puerto, secreto de sesiones y opciones del BCV.</td></tr>
+                <tr><td>Base de datos</td><td><code>backend/database/rutatours.sql</code> crea la base <code>rutatours</code> con todas sus tablas y, si está vacía, la ruta de ejemplo. Se puede ejecutar de nuevo sin duplicar datos.</td></tr>
+                <tr><td>Imágenes</td><td>Las fotos de rutas y comprobantes se guardan en la carpeta <code>uploads/</code>.</td></tr>
+                <tr><td>Respaldo</td><td><code>mysqldump -u USUARIO -p rutatours &gt; respaldo.sql</code> y una copia de <code>uploads/</code>. Hágalo a diario.</td></tr>
+                <tr><td>Pruebas</td><td><code>npm test</code> ejecuta las pruebas automáticas del cálculo de precios y las reglas de reserva.</td></tr>
+                <tr><td>Seguridad</td><td>Claves cifradas, sesiones con token y separadas para usuarios y clientes. El cliente nunca recibe costos ni ganancia.</td></tr>
+            </table>
+        </section>
+    </article>
+</div>

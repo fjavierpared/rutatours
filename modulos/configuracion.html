@@ -1,0 +1,78 @@
+<form id="form-config" class="modulo-contenido">
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-settings"></use></svg><span>Datos generales</span></h3>
+            <p class="ayuda">Se muestran en el menú lateral, la pantalla de inicio de sesión y el título de la pestaña.</p>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="config-nombre">Nombre del sistema</label>
+                <input type="text" id="config-nombre" maxlength="60" required>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-palette"></use></svg><span>Paleta de colores</span></h3>
+            <p class="ayuda">Colores del panel: menú, botones y encabezados.</p>
+        </div>
+
+        <div class="paletas" id="config-paletas"></div>
+
+        <div class="colores-grid">
+            <div class="form-group color-campo">
+                <label for="config-color-primario">Primario</label>
+                <div class="color-input"><input type="color" id="config-color-primario"><code></code></div>
+                <small>Menú lateral y encabezados de tablas</small>
+            </div>
+            <div class="form-group color-campo">
+                <label for="config-color-secundario">Secundario</label>
+                <div class="color-input"><input type="color" id="config-color-secundario"><code></code></div>
+                <small>Opción activa del menú y botones principales</small>
+            </div>
+            <div class="form-group color-campo">
+                <label for="config-color-acento">Acento</label>
+                <div class="color-input"><input type="color" id="config-color-acento"><code></code></div>
+                <small>Indicadores y detalles</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-dollar"></use></svg><span>Redondeo del precio por persona</span></h3>
+            <p class="ayuda">Se aplica a todas las rutas al cotizar. El total del grupo es el precio por persona redondeado × la cantidad de personas. Las reservas ya hechas conservan su precio.</p>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="config-redondeo-modo">Modo</label>
+                <select id="config-redondeo-modo">
+                    <option value="arriba">Hacia arriba (recomendado)</option>
+                    <option value="cercano">Al más cercano</option>
+                    <option value="ninguno">Sin redondeo (al centavo)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="config-redondeo-paso">Paso (USD)</label>
+                <select id="config-redondeo-paso">
+                    <option value="0.01">0,01 $</option>
+                    <option value="0.05">0,05 $</option>
+                    <option value="0.10">0,10 $</option>
+                    <option value="0.50">0,50 $</option>
+                    <option value="1.00">1,00 $</option>
+                    <option value="5.00">5,00 $</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Ejemplo</label>
+                <p class="ejemplo-redondeo" id="config-redondeo-ejemplo"></p>
+            </div>
+        </div>
+    </section>
+
+    <div class="barra-guardar">
+        <button type="button" class="btn btn-secundario" id="config-restaurar"><svg class="icon"><use href="img/icons.svg#i-rotate-ccw"></use></svg>Colores por defecto</button>
+        <button type="submit" class="btn btn-success"><svg class="icon"><use href="img/icons.svg#i-save"></use></svg>Guardar configuración</button>
+    </div>
+</form>

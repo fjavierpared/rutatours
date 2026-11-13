@@ -1,0 +1,20 @@
+{
+  "name": "rutatours",
+  "version": "1.0.0",
+  "description": "RutaTours: rutas turísticas con precios en USD y Bs (tasa BCV)",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "mysql2": "^3.24.6"
+  }
+}

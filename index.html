@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RutaTours</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/diagrama.css">
+</head>
+<body>
+    <!-- PANTALLA DE INICIO DE SESIÓN -->
+    <div id="pantalla-login" class="pantalla-login oculto">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icono-marca">
+                    <svg class="icon"><use href="img/icons.svg#i-map"></use></svg>
+                </div>
+                <h2 id="login-nombre-sistema">RutaTours</h2>
+                <p>Ingresa tus credenciales para acceder</p>
+            </div>
+
+            <div id="login-alerta" class="alerta-login oculto">
+                <svg class="icon"><use href="img/icons.svg#i-circle-alert"></use></svg>
+                <span id="login-alerta-texto"></span>
+            </div>
+
+            <form id="form-login" class="login-form" autocomplete="on">
+                <div class="login-campo">
+                    <label for="login-usuario">Usuario</label>
+                    <div class="login-input-grupo">
+                        <svg class="icon"><use href="img/icons.svg#i-users"></use></svg>
+                        <input type="text" id="login-usuario" required placeholder="Nombre de usuario" autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="login-campo">
+                    <label for="login-password">Contraseña</label>
+                    <div class="login-input-grupo">
+                        <svg class="icon"><use href="img/icons.svg#i-lock"></use></svg>
+                        <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="btn-login-submit">
+                    <span>Iniciar sesión</span>
+                    <svg class="icon"><use href="img/icons.svg#i-arrow-right"></use></svg>
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <span id="login-pie-nombre">RutaTours</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- APLICACIÓN PRINCIPAL -->
+    <div id="app-root" style="display:flex; width:100%; min-height:100vh;">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="marca-icono"><svg class="icon"><use href="img/icons.svg#i-map"></use></svg></div>
+                <div>
+                    <h3 id="nombre-sistema">RutaTours</h3>
+                    <p>Panel de gestión</p>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#inicio" data-modulo="inicio"><svg class="icon"><use href="img/icons.svg#i-house"></use></svg>Inicio</a></li>
+                <li class="menu-titulo">Operación</li>
+                <li><a href="#agendas" data-modulo="agendas"><svg class="icon"><use href="img/icons.svg#i-calendar-check"></use></svg>Reservas</a></li>
+                <li><a href="#pagos" data-modulo="pagos"><svg class="icon"><use href="img/icons.svg#i-receipt"></use></svg>Pagos</a></li>
+                <li><a href="#clientes" data-modulo="clientes"><svg class="icon"><use href="img/icons.svg#i-users"></use></svg>Clientes</a></li>
+                <li class="menu-titulo">Catálogo</li>
+                <li><a href="#rutas" data-modulo="rutas"><svg class="icon"><use href="img/icons.svg#i-route"></use></svg>Rutas</a></li>
+                <li><a href="#guias" data-modulo="guias"><svg class="icon"><use href="img/icons.svg#i-user-round"></use></svg>Guías</a></li>
+                <li><a href="#vehiculos" data-modulo="vehiculos"><svg class="icon"><use href="img/icons.svg#i-bus"></use></svg>Vehículos</a></li>
+                <li class="menu-titulo">Finanzas</li>
+                <li><a href="#tasa" data-modulo="tasa"><svg class="icon"><use href="img/icons.svg#i-landmark"></use></svg>Tasa BCV</a></li>
+                <li><a href="#metodos" data-modulo="metodos"><svg class="icon"><use href="img/icons.svg#i-credit-card"></use></svg>Métodos de pago</a></li>
+                <li class="menu-titulo">Sistema</li>
+                <li id="menu-item-usuarios"><a href="#usuarios" data-modulo="usuarios"><svg class="icon"><use href="img/icons.svg#i-user-cog"></use></svg>Usuarios</a></li>
+                <li id="menu-item-configuracion"><a href="#configuracion" data-modulo="configuracion"><svg class="icon"><use href="img/icons.svg#i-settings"></use></svg>Configuración</a></li>
+                <li><a href="#ayuda" data-modulo="ayuda"><svg class="icon"><use href="img/icons.svg#i-help-circle"></use></svg>Ayuda</a></li>
+            </ul>
+        </nav>
+        <main class="main">
+            <header class="top-bar">
+                <div>
+                    <h2 id="titulo-modulo">Inicio</h2>
+                    <p id="subtitulo-modulo" class="subtitulo"></p>
+                </div>
+                <div class="top-bar-acciones">
+                    <div class="fecha-hoy">
+                        <svg class="icon"><use href="img/icons.svg#i-calendar-days"></use></svg>
+                        <span id="fecha-hoy"></span>
+                    </div>
+                    <div class="usuario-topbar" id="usuario-perfil-topbar">
+                        <div class="usuario-avatar" id="usuario-avatar">A</div>
+                        <div class="usuario-info">
+                            <span class="usuario-nombre" id="usuario-nombre-topbar">Administrador</span>
+                            <span class="usuario-rol-badge" id="usuario-rol-topbar">Administrador</span>
+                        </div>
+                        <button type="button" class="btn-logout" id="btn-logout" title="Cerrar sesión">
+                            <svg class="icon"><use href="img/icons.svg#i-log-out"></use></svg>
+                            <span>Salir</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <div id="contenedor-modulos"></div>
+            <footer class="pie-sistema">
+                <span><span id="pie-nombre">RutaTours</span> · <span id="pie-anio"></span></span>
+                <span>Diseñado y hecho por el <strong>Ing. Francisco Paredes</strong></span>
+            </footer>
+        </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Scripts (orden importante: api y utilidades primero, módulos, app al final) -->
+    <script src="js/api.js"></script>
+    <script src="js/confirmar.js"></script>
+    <script src="js/moneda.js"></script>
+    <script src="js/estados.js"></script>
+    <script src="js/crud.js"></script>
+    <script src="js/diagramaRecorrido.js"></script>
+    <script src="js/inicio.js"></script>
+    <script src="js/usuarios.js"></script>
+    <script src="js/configuracion.js"></script>
+    <script src="js/guias.js"></script>
+    <script src="js/vehiculos.js"></script>
+    <script src="js/rutas.js"></script>
+    <script src="js/clientes.js"></script>
+    <script src="js/agendas.js"></script>
+    <script src="js/pagos.js"></script>
+    <script src="js/tasa.js"></script>
+    <script src="js/metodos.js"></script>
+    <script src="js/ayuda.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!-- LISTADO -->
+<div class="modulo-lista" id="rutas-vista-lista">
+    <section class="card card-tabla">
+        <div class="tabla-toolbar">
+            <div class="buscador">
+                <svg class="icon"><use href="img/icons.svg#i-search"></use></svg>
+                <input type="text" id="rutas-filtro" placeholder="Buscar por nombre o zona...">
+            </div>
+            <div class="contador-pill" id="rutas-contador">Cargando...</div>
+            <button type="button" class="btn btn-primary" id="rutas-nueva"><svg class="icon"><use href="img/icons.svg#i-plus"></use></svg>Nueva ruta</button>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista" id="rutas-tabla">
+                <thead>
+                    <tr>
+                        <th class="col-num">N°</th>
+                        <th>Ruta</th>
+                        <th>Duración</th>
+                        <th>Personas</th>
+                        <th>Guía / vehículo</th>
+                        <th class="num">Paradas</th>
+                        <th class="num">Reservas</th>
+                        <th>Estado</th>
+                        <th class="col-acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<!-- EDITOR -->
+<div class="editor-ruta oculto" id="rutas-vista-editor">
+    <div class="editor-barra">
+        <button type="button" class="btn btn-secundario" id="ruta-volver"><svg class="icon"><use href="img/icons.svg#i-arrow-left"></use></svg>Volver</button>
+        <h3 id="ruta-editor-titulo">Nueva ruta</h3>
+        <span class="editor-sucio oculto" id="ruta-sucio">Cambios sin guardar</span>
+        <button type="button" class="btn btn-success" id="ruta-guardar"><svg class="icon"><use href="img/icons.svg#i-save"></use></svg>Guardar ruta</button>
+    </div>
+
+    <!-- Estado / requisitos para activar -->
+    <section class="card" id="ruta-card-estado">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-circle-check"></use></svg><span>Estado de la ruta</span></h3>
+            <p class="ayuda">Una ruta solo se puede activar cuando está completa. Las rutas inactivas no se muestran a los clientes.</p>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="ruta-activa">Estado</label>
+                <select id="ruta-activa" data-g="activa">
+                    <option value="0">Borrador (inactiva)</option>
+                    <option value="1">Activa (visible en el catálogo)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ruta-disponible">Reservas</label>
+                <select id="ruta-disponible" data-g="disponible">
+                    <option value="1">Se puede agendar</option>
+                    <option value="0">Pausada (visible, sin reservas)</option>
+                </select>
+            </div>
+        </div>
+        <ul class="requisitos" id="ruta-problemas"></ul>
+    </section>
+
+    <!-- Datos generales -->
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-map"></use></svg><span>Datos generales</span></h3>
+        </div>
+        <div class="form-grid">
+            <div class="form-group span-2">
+                <label for="ruta-nombre">Nombre de la ruta</label>
+                <input type="text" id="ruta-nombre" data-g="nombre" maxlength="120" required>
+            </div>
+            <div class="form-group span-2">
+                <label for="ruta-zona">Zona de operación</label>
+                <input type="text" id="ruta-zona" data-g="zona" maxlength="200">
+            </div>
+            <div class="form-group">
+                <label for="ruta-dias">Días</label>
+                <input type="number" id="ruta-dias" data-g="dias" min="1" max="60" step="1">
+            </div>
+            <div class="form-group">
+                <label for="ruta-noches">Noches</label>
+                <input type="number" id="ruta-noches" data-g="noches" min="0" max="60" step="1">
+            </div>
+            <div class="form-group">
+                <label for="ruta-id_guia">Guía</label>
+                <select id="ruta-id_guia" data-g="id_guia"></select>
+            </div>
+            <div class="form-group">
+                <label for="ruta-id_vehiculo">Vehículo</label>
+                <select id="ruta-id_vehiculo" data-g="id_vehiculo"></select>
+            </div>
+        </div>
+        <div class="form-group bloque">
+            <label for="ruta-descripcion">Descripción para el cliente</label>
+            <textarea id="ruta-descripcion" data-g="descripcion" rows="3" maxlength="5000"></textarea>
+        </div>
+    </section>
+
+    <!-- Capacidad y fechas -->
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-calendar-days"></use></svg><span>Capacidad y fechas</span></h3>
+            <p class="ayuda">Cada reserva es un grupo privado: ocupa la ruta, el guía y el vehículo todos los días del viaje.</p>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="ruta-min_personas">Mínimo de personas</label>
+                <input type="number" id="ruta-min_personas" data-g="min_personas" min="1" step="1">
+            </div>
+            <div class="form-group">
+                <label for="ruta-max_personas">Máximo de personas</label>
+                <input type="number" id="ruta-max_personas" data-g="max_personas" min="1" step="1">
+                <small class="ayuda-campo" id="ruta-max-ayuda"></small>
+            </div>
+            <div class="form-group">
+                <label for="ruta-abono_pct">Abono para reservar (%)</label>
+                <input type="number" id="ruta-abono_pct" data-g="abono_pct" min="0" max="100" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="ruta-anticipacion_dias">Días de anticipación</label>
+                <input type="number" id="ruta-anticipacion_dias" data-g="anticipacion_dias" min="0" max="365" step="1">
+            </div>
+            <div class="form-group">
+                <label for="ruta-fecha_desde">Disponible desde</label>
+                <input type="date" id="ruta-fecha_desde" data-g="fecha_desde">
+            </div>
+            <div class="form-group">
+                <label for="ruta-fecha_hasta">Disponible hasta</label>
+                <input type="date" id="ruta-fecha_hasta" data-g="fecha_hasta">
+            </div>
+        </div>
+        <div class="form-group bloque">
+            <label>Días de salida permitidos <small class="ayuda-campo">(ninguno marcado = todos los días)</small></label>
+            <div class="dias-semana" id="ruta-dias-semana"></div>
+        </div>
+    </section>
+
+    <!-- Recorrido -->
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-route"></use></svg><span>Recorrido</span></h3>
+            <p class="ayuda">Paradas en orden. Si la última parada es el mismo lugar que la salida, el diagrama se dibuja como circuito.</p>
+        </div>
+        <div id="ruta-diagrama"></div>
+        <div id="ruta-paradas" class="lista-editable"></div>
+        <button type="button" class="btn btn-secundario btn-chico" data-op="agregar" data-l="paradas"><svg class="icon"><use href="img/icons.svg#i-plus"></use></svg>Agregar parada</button>
+    </section>
+
+    <!-- Costos -->
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-dollar"></use></svg><span>Costos (USD)</span></h3>
+            <p class="ayuda">
+                <strong>Grupo</strong>: se paga una vez (transporte, guía, permisos). <strong>Persona</strong>: se multiplica por la cantidad de personas.
+                <strong>Unidad</strong>: cupos como habitaciones; las filas con la misma categoría son alternativas y el sistema elige la combinación más barata.
+            </p>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista tabla-editable" id="ruta-costos">
+                <thead>
+                    <tr><th>Tipo</th><th>Categoría</th><th>Concepto</th><th class="num">Monto USD</th><th class="num">Personas/unidad</th><th class="num">Unidades disp.</th><th class="col-acciones"></th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="form-acciones">
+            <button type="button" class="btn btn-secundario btn-chico" data-op="agregar" data-l="costos"><svg class="icon"><use href="img/icons.svg#i-plus"></use></svg>Agregar costo</button>
+            <button type="button" class="btn btn-secundario btn-chico" id="ruta-costos-recursos"><svg class="icon"><use href="img/icons.svg#i-bus"></use></svg>Agregar costos del guía y del vehículo</button>
+        </div>
+    </section>
+
+    <!-- Cargos -->
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-receipt"></use></svg><span>Ganancia e impuestos (%)</span></h3>
+            <p class="ayuda">
+                Se aplican en orden. <strong>Base acumulada</strong> = sobre el costo más los cargos anteriores (Ej.: IVA sobre costo + ganancia).
+                <strong>Solo pago en divisas</strong> (IGTF) no entra en la cotización: se suma al pagar con un método que lo aplique.
+                La ganancia no la ve el cliente: se suma dentro de "Servicio".
+            </p>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista tabla-editable" id="ruta-cargos">
+                <thead>
+                    <tr><th>Nombre</th><th>Tipo</th><th class="num">%</th><th>Base</th><th>Aplica</th><th class="col-acciones"></th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="form-acciones">
+            <button type="button" class="btn btn-secundario btn-chico" data-op="agregar" data-l="cargos"><svg class="icon"><use href="img/icons.svg#i-plus"></use></svg>Agregar cargo</button>
+        </div>
+    </section>
+
+    <!-- Detalles -->
+    <section class="card">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-file-text"></use></svg><span>Ficha para el cliente</span></h3>
+        </div>
+        <div class="detalles-grid" id="ruta-detalles"></div>
+    </section>
+
+    <!-- Imágenes -->
+    <section class="card" id="ruta-card-imagenes">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-image"></use></svg><span>Imágenes</span></h3>
+            <p class="ayuda">JPG, PNG o WEBP de hasta 2 MB; máximo 10 por ruta. La primera es la portada del catálogo.</p>
+        </div>
+        <div class="galeria" id="ruta-imagenes"></div>
+        <label class="btn btn-secundario btn-chico" id="ruta-imagen-boton">
+            <svg class="icon"><use href="img/icons.svg#i-upload"></use></svg>Subir imágenes
+            <input type="file" id="ruta-imagen-archivo" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        </label>
+        <p class="ayuda oculto" id="ruta-imagenes-aviso">Guarde la ruta para poder subir imágenes.</p>
+    </section>
+
+    <!-- Cotizador -->
+    <section class="card" id="ruta-card-cotizador">
+        <div class="card-header">
+            <h3><svg class="icon"><use href="img/icons.svg#i-calculator"></use></svg><span>Cotizador interno</span></h3>
+            <p class="ayuda">Calcula con la versión <strong>guardada</strong> de la ruta, la tasa BCV vigente y el redondeo de Configuración.</p>
+        </div>
+        <div class="form-linea">
+            <div class="form-group">
+                <label for="ruta-cotizar-personas">Personas</label>
+                <input type="number" id="ruta-cotizar-personas" min="1" step="1">
+            </div>
+            <button type="button" class="btn btn-primary" id="ruta-cotizar"><svg class="icon"><use href="img/icons.svg#i-calculator"></use></svg>Calcular</button>
+            <button type="button" class="btn btn-secundario" id="ruta-tabla-precios"><svg class="icon"><use href="img/icons.svg#i-layout-grid"></use></svg>Precios por cantidad de personas</button>
+        </div>
+        <div id="ruta-cotizacion"></div>
+    </section>
+</div>

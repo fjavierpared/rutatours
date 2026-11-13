@@ -1,0 +1,26 @@
+<div class="modulo-contenido">
+    <div class="kpis" id="inicio-kpis">
+        <a class="kpi" href="#rutas"><span class="kpi-icono"><svg class="icon"><use href="img/icons.svg#i-route"></use></svg></span><span><small>Rutas activas</small><strong data-kpi="rutas_activas">—</strong></span></a>
+        <a class="kpi" href="#agendas"><span class="kpi-icono"><svg class="icon"><use href="img/icons.svg#i-calendar-check"></use></svg></span><span><small>Próximas salidas</small><strong data-kpi="proximas_total">—</strong></span></a>
+        <a class="kpi" href="#pagos"><span class="kpi-icono acento"><svg class="icon"><use href="img/icons.svg#i-receipt"></use></svg></span><span><small>Pagos por verificar</small><strong data-kpi="pagos_por_verificar">—</strong></span></a>
+        <a class="kpi" href="#clientes"><span class="kpi-icono"><svg class="icon"><use href="img/icons.svg#i-users"></use></svg></span><span><small>Clientes</small><strong data-kpi="clientes">—</strong></span></a>
+        <a class="kpi" href="#tasa"><span class="kpi-icono"><svg class="icon"><use href="img/icons.svg#i-landmark"></use></svg></span><span><small>Tasa BCV</small><strong id="inicio-tasa">—</strong></span></a>
+    </div>
+
+    <div id="inicio-alertas"></div>
+
+    <section class="card card-tabla">
+        <div class="tabla-toolbar">
+            <strong>Próximas salidas</strong>
+            <a class="btn btn-secundario btn-chico" href="#agendas">Ver todas</a>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista" id="inicio-proximas">
+                <thead>
+                    <tr><th class="col-num">N°</th><th>Salida</th><th>Ruta</th><th>Cliente</th><th class="num">Personas</th><th>Estado</th></tr>
+                </thead>
+                <tbody><tr><td colspan="6" class="vacio"><span>Cargando...</span></td></tr></tbody>
+            </table>
+        </div>
+    </section>
+</div>

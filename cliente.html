@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RutaTours · Planes turísticos</title>
+    <meta name="description" content="Planes turísticos en grupo privado: elija su ruta, calcule el precio y reserve en línea.">
+    <link rel="stylesheet" href="css/cliente.css">
+    <link rel="stylesheet" href="css/diagrama.css">
+</head>
+<body>
+    <header class="cabecera">
+        <div class="contenedor cabecera-fila">
+            <a href="#catalogo" class="marca">
+                <span class="marca-icono"><svg class="icon"><use href="img/icons.svg#i-map"></use></svg></span>
+                <span id="nombre-sistema">RutaTours</span>
+            </a>
+            <nav class="nav" aria-label="Principal">
+                <a href="#catalogo" data-vista="catalogo">Planes</a>
+                <a href="#reservas" data-vista="reservas">Mis reservas</a>
+                <a href="#ayuda" data-vista="ayuda">¿Cómo funciona?</a>
+            </nav>
+            <div class="sesion" id="sesion"></div>
+        </div>
+    </header>
+
+    <main id="vista" class="contenedor vista" tabindex="-1"></main>
+
+    <footer class="pie">
+        <div class="contenedor pie-fila">
+            <span><span id="pie-nombre">RutaTours</span> · <span id="pie-anio"></span></span>
+            <span id="pie-tasa"></span>
+            <a class="pie-personal" href="/admin">Acceso del personal</a>
+        </div>
+    </footer>
+
+    <!-- Acceso: ingresar / crear cuenta -->
+    <dialog class="dialogo" id="acceso">
+        <div class="dialogo-cabecera">
+            <div class="pestanas" role="tablist">
+                <button type="button" class="pestana activa" data-pestana="ingresar" role="tab">Ingresar</button>
+                <button type="button" class="pestana" data-pestana="registro" role="tab">Crear cuenta</button>
+            </div>
+            <button type="button" class="btn-icono" data-cerrar title="Cerrar"><svg class="icon"><use href="img/icons.svg#i-x"></use></svg></button>
+        </div>
+        <p class="acceso-mensaje oculto" id="acceso-mensaje"></p>
+
+        <form id="form-ingresar" class="form" autocomplete="on">
+            <label class="campo">Correo
+                <input type="email" name="email" required autocomplete="email">
+            </label>
+            <label class="campo">Contraseña
+                <input type="password" name="password" required autocomplete="current-password">
+            </label>
+            <button type="submit" class="btn btn-primario btn-bloque">Ingresar</button>
+        </form>
+
+        <form id="form-registro" class="form oculto" autocomplete="on">
+            <label class="campo">Nombre y apellido
+                <input type="text" name="nombre" required maxlength="100" autocomplete="name">
+            </label>
+            <div class="form-dos">
+                <label class="campo">Cédula o pasaporte
+                    <input type="text" name="documento" required maxlength="20" placeholder="V-12345678">
+                </label>
+                <label class="campo">Teléfono
+                    <input type="tel" name="telefono" maxlength="30" autocomplete="tel" placeholder="0414-1234567">
+                </label>
+            </div>
+            <label class="campo">Correo
+                <input type="email" name="email" required maxlength="120" autocomplete="email">
+            </label>
+            <label class="campo">Contraseña
+                <input type="password" name="password" required minlength="6" autocomplete="new-password">
+                <small>Mínimo 6 caracteres.</small>
+            </label>
+            <button type="submit" class="btn btn-primario btn-bloque">Crear cuenta</button>
+        </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Orden: base y compartidos primero, vistas, app al final -->
+    <script src="js/cliente/base.js"></script>
+    <script src="js/confirmar.js"></script>
+    <script src="js/moneda.js"></script>
+    <script src="js/estados.js"></script>
+    <script src="js/diagramaRecorrido.js"></script>
+    <script src="js/cliente/catalogo.js"></script>
+    <script src="js/cliente/ruta.js"></script>
+    <script src="js/cliente/reservas.js"></script>
+    <script src="js/cliente/ayuda.js"></script>
+    <script src="js/cliente/app.js"></script>
+</body>
+</html>

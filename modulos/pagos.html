@@ -1,0 +1,50 @@
+<div class="modulo-lista">
+    <section class="card card-tabla">
+        <div class="tabla-toolbar">
+            <div class="tabs" id="pagos-tabs" role="tablist">
+                <button type="button" class="tab activa" data-estado="pendiente">Por verificar</button>
+                <button type="button" class="tab" data-estado="verificado">Verificados</button>
+                <button type="button" class="tab" data-estado="rechazado">Rechazados</button>
+                <button type="button" class="tab" data-estado="">Todos</button>
+            </div>
+            <div class="buscador">
+                <svg class="icon"><use href="img/icons.svg#i-search"></use></svg>
+                <input type="text" id="pagos-filtro" placeholder="Buscar por cliente, ruta, referencia o método...">
+            </div>
+            <div class="contador-pill" id="pagos-contador">Cargando...</div>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista" id="pagos-tabla">
+                <thead>
+                    <tr>
+                        <th>Reportado</th>
+                        <th>Reserva</th>
+                        <th>Cliente</th>
+                        <th>Método / referencia</th>
+                        <th class="num">Abona</th>
+                        <th class="num">IGTF</th>
+                        <th class="num">Debe recibir</th>
+                        <th>Estado</th>
+                        <th class="col-acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<dialog class="dialogo" id="pago-dialogo-rechazo">
+    <form method="dialog" id="pago-form-rechazo">
+        <h3><svg class="icon"><use href="img/icons.svg#i-ban"></use></svg>Rechazar pago</h3>
+        <p class="ayuda" id="pago-rechazo-resumen"></p>
+        <div class="form-group">
+            <label for="pago-rechazo-motivo">Motivo (lo verá el cliente)</label>
+            <input type="text" id="pago-rechazo-motivo" maxlength="255" required placeholder="Ej.: La referencia no aparece en el banco">
+        </div>
+        <div class="form-acciones">
+            <button type="submit" class="btn btn-peligro" value="rechazar">Rechazar pago</button>
+            <button type="button" class="btn btn-secundario" id="pago-rechazo-cancelar">Cancelar</button>
+        </div>
+    </form>
+</dialog>

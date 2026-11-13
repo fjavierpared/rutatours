@@ -1,0 +1,49 @@
+<div class="modulo-lista">
+    <section class="card">
+        <div class="barra-filtros sin-margen">
+            <div class="buscador">
+                <svg class="icon"><use href="img/icons.svg#i-search"></use></svg>
+                <input type="text" id="agendas-filtro" placeholder="Buscar por cliente, ruta, guía o placa...">
+            </div>
+            <select id="agendas-estado" aria-label="Estado">
+                <option value="">Todos los estados</option>
+                <option value="pendiente_abono">Pendiente de abono</option>
+                <option value="reservada">Reservada</option>
+                <option value="pagada">Pagada</option>
+                <option value="completada">Completada</option>
+                <option value="cancelada">Cancelada</option>
+            </select>
+            <label class="filtro-fecha">Salida desde <input type="date" id="agendas-desde"></label>
+            <label class="filtro-fecha">hasta <input type="date" id="agendas-hasta"></label>
+        </div>
+    </section>
+    <section class="card card-tabla">
+        <div class="tabla-toolbar">
+            <strong>Reservas</strong>
+            <div class="contador-pill" id="agendas-contador">Cargando...</div>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista" id="agendas-tabla">
+                <thead>
+                    <tr>
+                        <th class="col-num">N°</th>
+                        <th>Salida</th>
+                        <th>Ruta</th>
+                        <th>Cliente</th>
+                        <th class="num">Pers.</th>
+                        <th class="num">Total</th>
+                        <th class="num">Pagado</th>
+                        <th class="num">Saldo</th>
+                        <th>Estado</th>
+                        <th class="col-acciones">Detalle</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<dialog class="dialogo dialogo-ancho" id="agenda-dialogo">
+    <div id="agenda-detalle"></div>
+</dialog>

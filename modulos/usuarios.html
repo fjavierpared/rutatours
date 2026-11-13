@@ -1,0 +1,90 @@
+<div class="modulo-contenido layout-split">
+    <!-- COLUMNA IZQUIERDA: Formulario -->
+    <aside class="split-form-col">
+        <section class="card card-formulario">
+            <div class="card-header">
+                <h3 id="usuario-form-titulo">
+                    <svg class="icon"><use href="img/icons.svg#i-user-plus"></use></svg>
+                    <span>Nuevo usuario</span>
+                </h3>
+                <p class="ayuda">Crea o edita cuentas con acceso al sistema y define sus permisos.</p>
+            </div>
+            <form id="form-usuario" class="form-vertical" autocomplete="off">
+                <input type="hidden" id="usuario-id">
+                
+                <div class="form-group">
+                    <label for="usuario-nombre">Nombre completo</label>
+                    <input type="text" id="usuario-nombre" maxlength="100" required placeholder="Ej.: Juan Pérez">
+                </div>
+
+                <div class="form-group">
+                    <label for="usuario-login">Nombre de usuario (Login)</label>
+                    <input type="text" id="usuario-login" maxlength="50" required placeholder="Ej.: jperez" autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="usuario-rol">Rol del usuario</label>
+                    <select id="usuario-rol" required>
+                        <option value="operador">Operador (Consulta y reportes)</option>
+                        <option value="admin">Administrador (Acceso total)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="usuario-password">Contraseña</label>
+                    <input type="password" id="usuario-password" placeholder="Mínimo 4 caracteres" autocomplete="new-password">
+                    <small class="ayuda-campo" id="usuario-password-ayuda">Obligatoria al crear usuario nuevo.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="usuario-activo">Estado</label>
+                    <select id="usuario-activo" required>
+                        <option value="1">Activo (Permite iniciar sesión)</option>
+                        <option value="0">Inactivo (Acceso bloqueado)</option>
+                    </select>
+                </div>
+
+                <div class="form-acciones">
+                    <button type="submit" class="btn btn-success" id="usuario-submit">
+                        <svg class="icon"><use href="img/icons.svg#i-save"></use></svg>Guardar usuario
+                    </button>
+                    <button type="button" class="btn btn-secundario oculto" id="usuario-cancelar">
+                        <svg class="icon"><use href="img/icons.svg#i-x"></use></svg>Cancelar edición
+                    </button>
+                </div>
+            </form>
+        </section>
+    </aside>
+
+    <!-- COLUMNA DERECHA: Tabla y Buscador -->
+    <main class="split-tabla-col">
+        <section class="card card-tabla">
+            <div class="tabla-toolbar">
+                <div class="buscador">
+                    <svg class="icon"><use href="img/icons.svg#i-search"></use></svg>
+                    <input type="text" id="filtro-usuario" placeholder="Buscar por nombre o usuario...">
+                </div>
+                <div class="contador-pill" id="usuario-contador">
+                    <span>Cargando...</span>
+                </div>
+            </div>
+
+            <div class="tabla-contenedor">
+                <table class="tabla-lista" id="tabla-usuarios">
+                    <thead>
+                        <tr>
+                            <th class="col-num">N°</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th class="col-acciones">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+

@@ -1,0 +1,32 @@
+<div class="modulo-lista">
+    <div class="alerta alerta-info alerta-con-accion">
+        <svg class="icon"><use href="img/icons.svg#i-info"></use></svg>
+        <div>Los clientes se registran desde el portal del cliente. Desactivar a un cliente le impide iniciar sesión; sus reservas se conservan.</div>
+        <a class="btn btn-primary btn-chico" href="/" target="_blank" rel="noopener"><svg class="icon"><use href="img/icons.svg#i-arrow-right"></use></svg>Abrir portal del cliente</a>
+    </div>
+    <section class="card card-tabla">
+        <div class="tabla-toolbar">
+            <div class="buscador">
+                <svg class="icon"><use href="img/icons.svg#i-search"></use></svg>
+                <input type="text" id="clientes-filtro" placeholder="Buscar por nombre, documento, correo o teléfono...">
+            </div>
+            <div class="contador-pill" id="clientes-contador">Cargando...</div>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista" id="clientes-tabla">
+                <thead>
+                    <tr>
+                        <th class="col-num">N°</th>
+                        <th>Cliente</th>
+                        <th>Contacto</th>
+                        <th class="num">Reservas</th>
+                        <th>Registrado</th>
+                        <th>Estado</th>
+                        <th class="col-acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>

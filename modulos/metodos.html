@@ -1,0 +1,74 @@
+<div class="modulo-contenido layout-split">
+    <aside class="split-form-col">
+        <section class="card card-formulario">
+            <div class="card-header">
+                <h3 id="metodo-form-titulo"><svg class="icon"><use href="img/icons.svg#i-credit-card"></use></svg><span>Nuevo método de pago</span></h3>
+                <p class="ayuda">El cliente ve el nombre y los datos de pago al reportar un pago. Si el método aplica IGTF, se suma el recargo sobre el monto pagado.</p>
+            </div>
+            <form id="metodo-form" class="form-vertical" autocomplete="off">
+                <input type="hidden" id="metodo-id">
+                <div class="form-group">
+                    <label for="metodo-nombre">Nombre</label>
+                    <input type="text" id="metodo-nombre" maxlength="60" required placeholder="Ej.: Pago móvil">
+                </div>
+                <div class="form-group">
+                    <label for="metodo-moneda">Moneda</label>
+                    <select id="metodo-moneda">
+                        <option value="VES">Bolívares (se convierte con la tasa BCV)</option>
+                        <option value="USD">Dólares / divisas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="metodo-aplica_igtf">IGTF</label>
+                    <select id="metodo-aplica_igtf">
+                        <option value="0">No aplica</option>
+                        <option value="1">Aplica (pago en divisas)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="metodo-datos">Datos para el cliente</label>
+                    <textarea id="metodo-datos" maxlength="500" rows="4" placeholder="Banco, teléfono, cédula, correo Zelle, billetera..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="metodo-activo">Estado</label>
+                    <select id="metodo-activo">
+                        <option value="1">Activo (visible para el cliente)</option>
+                        <option value="0">Inactivo</option>
+                    </select>
+                </div>
+                <div class="form-acciones">
+                    <button type="submit" class="btn btn-success" id="metodo-submit"></button>
+                    <button type="button" class="btn btn-secundario oculto" id="metodo-cancelar"><svg class="icon"><use href="img/icons.svg#i-x"></use></svg>Cancelar edición</button>
+                </div>
+            </form>
+        </section>
+    </aside>
+
+    <main class="split-tabla-col">
+        <section class="card card-tabla">
+            <div class="tabla-toolbar">
+                <div class="buscador">
+                    <svg class="icon"><use href="img/icons.svg#i-search"></use></svg>
+                    <input type="text" id="metodo-filtro" placeholder="Buscar método...">
+                </div>
+                <div class="contador-pill" id="metodo-contador">Cargando...</div>
+            </div>
+            <div class="tabla-contenedor">
+                <table class="tabla-lista" id="metodo-tabla">
+                    <thead>
+                        <tr>
+                            <th class="col-num">N°</th>
+                            <th>Método</th>
+                            <th>Moneda</th>
+                            <th>IGTF</th>
+                            <th>Datos</th>
+                            <th>Estado</th>
+                            <th class="col-acciones">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>

@@ -1,0 +1,30 @@
+# Servicio systemd: mantiene RutaTours encendido y lo reinicia si se cae o si el VPS se reinicia.
+# Instalación:
+#   sudo cp deploy/rutatours.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now rutatours
+# Ver registros:  sudo journalctl -u rutatours -f
+
+[Unit]
+Description=RutaTours (sistema de rutas turísticas)
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=rutatours
+Group=rutatours
+WorkingDirectory=/opt/rutatours/backend
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+
+# Endurecimiento: el proceso solo puede escribir en uploads/
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/rutatours/uploads
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

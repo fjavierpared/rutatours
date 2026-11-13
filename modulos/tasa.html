@@ -1,0 +1,58 @@
+<div class="modulo-contenido">
+    <div class="tasa-grid">
+        <section class="card">
+            <div class="card-header">
+                <h3><svg class="icon"><use href="img/icons.svg#i-landmark"></use></svg><span>Tasa vigente</span></h3>
+                <p class="ayuda">Es el último registro. Se usa para mostrar precios en bolívares y se guarda en cada pago al momento de reportarlo.</p>
+            </div>
+            <div id="tasa-vigente" class="tasa-vigente">Cargando...</div>
+            <div class="form-acciones">
+                <button type="button" class="btn btn-primary" id="tasa-actualizar"><svg class="icon"><use href="img/icons.svg#i-refresh-cw"></use></svg>Actualizar desde el BCV</button>
+            </div>
+            <p class="ayuda">Lee el valor del dólar publicado en bcv.org.ve. Si el sitio no responde o cambia su formato, use la carga manual.</p>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h3><svg class="icon"><use href="img/icons.svg#i-pencil"></use></svg><span>Carga manual</span></h3>
+                <p class="ayuda">Respaldo cuando la lectura automática falla. Copie el valor exacto publicado por el BCV.</p>
+            </div>
+            <form id="tasa-form" class="form-vertical" autocomplete="off">
+                <div class="form-group">
+                    <label for="tasa-valor">Bolívares por 1 USD</label>
+                    <input type="text" id="tasa-valor" inputmode="decimal" required placeholder="Ej.: 236,4581">
+                    <small class="ayuda-campo">Use coma o punto para los decimales (hasta 4).</small>
+                </div>
+                <div class="form-group">
+                    <label for="tasa-fecha">Fecha valor (opcional)</label>
+                    <input type="date" id="tasa-fecha">
+                </div>
+                <div class="form-acciones">
+                    <button type="submit" class="btn btn-success"><svg class="icon"><use href="img/icons.svg#i-save"></use></svg>Registrar tasa</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <section class="card card-tabla">
+        <div class="tabla-toolbar">
+            <strong>Historial</strong>
+            <div class="contador-pill" id="tasa-contador">Cargando...</div>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="tabla-lista" id="tasa-tabla">
+                <thead>
+                    <tr>
+                        <th>Registrada</th>
+                        <th class="num">Valor</th>
+                        <th class="num">Variación</th>
+                        <th>Fecha valor</th>
+                        <th>Fuente</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>
