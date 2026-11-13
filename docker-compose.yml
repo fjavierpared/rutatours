@@ -1,0 +1,29 @@
+# RutaTours en Docker, junto a un nginx y un MySQL que ya corren en la red "docker_webnet".
+#   docker compose up -d --build        (construir y levantar)
+#   docker compose logs -f              (ver registros)
+# Configuración en backend/.env (DB_HOST=mysql: el nombre del contenedor de MySQL en esa red).
+services:
+  rutatours-web:
+    build: .
+    image: rutatours-web
+    container_name: rutatours-web
+    restart: unless-stopped
+    env_file: backend/.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+    volumes:
+      - uploads:/app/uploads          # fotos de rutas y comprobantes (persisten entre versiones)
+    ports:
+      - "127.0.0.1:4330:3000"         # solo para pruebas desde el propio VPS; el público entra por nginx
+    networks:
+      - webnet
+
+volumes:
+  uploads:
+    name: rutatours_uploads
+
+networks:
+  webnet:
+    external: true
+    name: docker_webnet

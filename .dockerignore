@@ -1,0 +1,7 @@
+.git
+.gitignore
+**/node_modules
+backend/.env
+uploads
+*.log
+.npm

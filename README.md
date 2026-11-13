@@ -41,8 +41,9 @@ cd backend && npm install && npm start
 
 ## Despliegue
 
-Guía paso a paso para un VPS con Nginx, HTTPS, arranque automático y respaldo diario:
-[deploy/DESPLIEGUE.md](deploy/DESPLIEGUE.md).
+- **Con Docker** (VPS con nginx y MySQL en contenedores): `docker compose up -d --build` — guía en
+  [deploy/docker/README.md](deploy/docker/README.md).
+- **Sin Docker** (Nginx, systemd y respaldo diario en el sistema): [deploy/DESPLIEGUE.md](deploy/DESPLIEGUE.md).
 
 ## Estructura
 
