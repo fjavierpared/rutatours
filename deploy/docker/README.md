@@ -9,7 +9,10 @@ Ejemplo con `DOMINIO=rutatours.venustechfp.com`. Ajuste las rutas si su carpeta 
 ## 1. DNS (Cloudflare)
 
 Registro **A**: nombre `rutatours`, valor `161.97.83.13`.
-Déjelo en **DNS only (nube gris)** hasta emitir el certificado (paso 6); luego puede activar el proxy.
+
+Con el proxy de Cloudflare activo (nube naranja), Cloudflare puede redirigir a HTTPS y la validación de
+Let's Encrypt llega por el puerto 443. En ese caso la etapa 1 de nginx también debe escuchar en 443 con un
+certificado existente (Ej.: el del dominio principal): vea el bloque comentado en `nginx-1-http.conf`.
 
 ## 2. Código
 
