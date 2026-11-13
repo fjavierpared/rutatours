@@ -34,6 +34,12 @@ router.post('/register', async (req, res) => {
 // Se conserva por compatibilidad; el portal usa POST /api/acceso (ingreso unificado)
 router.post('/login', async (req, res) => {
     const email = emailValido(req.body.email, 'El correo', { requerido: true });
+    // Una página vieja (en caché) puede enviar aquí el correo de un usuario del equipo: se le orienta
+    // sin contarlo como intento fallido.
+    const [[delEquipo]] = await db.query('SELECT 1 AS si FROM usuario WHERE email = ?', [email]);
+    if (delEquipo) {
+        throw httpError(409, 'Ese correo es de un usuario del equipo. Recargue la página (Ctrl + Shift + R) e ingrese de nuevo, o entre por /admin');
+    }
     const control = controlIngreso(req, email);
     const [[c]] = await db.query('SELECT id_cliente, nombre, email, password, activo FROM cliente WHERE email = ?', [email]);
     if (!c || !verificarPassword(String(req.body.password || ''), c.password)) { control.fallo(); throw httpError(401, 'Correo o contraseña incorrectos'); }

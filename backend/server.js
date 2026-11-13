@@ -17,16 +17,24 @@ app.use('/backend', (req, res) => res.status(404).end());
 //   /        -> portal del cliente (catálogo): lo primero que ve cualquier visitante
 //   /admin   -> panel de administración (login del personal)
 const RAIZ = path.join(__dirname, '..');
-app.get('/', (req, res) => res.sendFile(path.join(RAIZ, 'cliente.html')));
+// HTML, JS y CSS sin caché "a ciegas": el navegador pregunta si cambiaron (ETag) y, tras una
+// actualización, basta recargar la página para recibir la versión nueva. Las imágenes sí se guardan.
+const SIN_CACHE = { 'Cache-Control': 'no-cache' };
+app.get('/', (req, res) => res.sendFile(path.join(RAIZ, 'cliente.html'), { headers: SIN_CACHE }));
 app.get('/admin', (req, res) => {
     // Con barra final ("/admin/") las rutas relativas del panel (css/, js/) apuntarían a /admin/css: se corrige
     if (req.originalUrl.split('?')[0].endsWith('/')) return res.redirect(302, '/admin');
-    res.sendFile(path.join(RAIZ, 'index.html'));
+    res.sendFile(path.join(RAIZ, 'index.html'), { headers: SIN_CACHE });
 });
 // Direcciones anteriores: siguen funcionando
 app.get('/index.html', (req, res) => res.redirect(302, '/admin'));
 app.get('/cliente.html', (req, res) => res.redirect(302, '/'));
-app.use(express.static(RAIZ, { index: false }));
+app.use(express.static(RAIZ, {
+    index: false,
+    setHeaders(res, ruta) {
+        if (/\.(html|js|css)$/.test(ruta)) res.setHeader('Cache-Control', 'no-cache');
+    }
+}));
 
 // ==========================================
 // RUTAS DE LA API
