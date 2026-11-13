@@ -20,11 +20,38 @@ const RAIZ = path.join(__dirname, '..');
 // HTML, JS y CSS sin caché "a ciegas": el navegador pregunta si cambiaron (ETag) y, tras una
 // actualización, basta recargar la página para recibir la versión nueva. Las imágenes sí se guardan.
 const SIN_CACHE = { 'Cache-Control': 'no-cache' };
-app.get('/', (req, res) => res.sendFile(path.join(RAIZ, 'cliente.html'), { headers: SIN_CACHE }));
+
+// Marca de versión en los .js y .css de las páginas (app.js?v=abc123). Cloudflare y el navegador
+// guardan esos archivos varias horas; al publicar cambios la marca cambia y se piden de nuevo.
+// La versión es un resumen del contenido de js/ y css/: solo cambia si cambian esos archivos.
+const fs = require('fs');
+const crypto = require('crypto');
+function versionFrontend() {
+    const h = crypto.createHash('sha1');
+    for (const dir of ['js', 'js/cliente', 'css']) {
+        const ruta = path.join(RAIZ, dir);
+        for (const f of fs.readdirSync(ruta).filter(f => /\.(js|css)$/.test(f)).sort()) {
+            h.update(f).update(fs.readFileSync(path.join(ruta, f)));
+        }
+    }
+    return h.digest('hex').slice(0, 10);
+}
+const paginas = new Map();
+function paginaConVersion(archivo) {
+    // En producción se calcula una vez; en desarrollo, en cada carga (los cambios se ven al recargar)
+    if (process.env.NODE_ENV === 'production' && paginas.has(archivo)) return paginas.get(archivo);
+    const v = versionFrontend();
+    const html = fs.readFileSync(path.join(RAIZ, archivo), 'utf8')
+        .replace(/(src|href)="((?:js|css)\/[^"?]+\.(?:js|css))"/g, `$1="$2?v=${v}"`);
+    paginas.set(archivo, html);
+    return html;
+}
+
+app.get('/', (req, res) => res.set(SIN_CACHE).type('html').send(paginaConVersion('cliente.html')));
 app.get('/admin', (req, res) => {
     // Con barra final ("/admin/") las rutas relativas del panel (css/, js/) apuntarían a /admin/css: se corrige
     if (req.originalUrl.split('?')[0].endsWith('/')) return res.redirect(302, '/admin');
-    res.sendFile(path.join(RAIZ, 'index.html'), { headers: SIN_CACHE });
+    res.set(SIN_CACHE).type('html').send(paginaConVersion('index.html'));
 });
 // Direcciones anteriores: siguen funcionando
 app.get('/index.html', (req, res) => res.redirect(302, '/admin'));
