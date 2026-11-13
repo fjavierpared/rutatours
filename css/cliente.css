@@ -296,3 +296,8 @@ h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.01em
 @media (max-width: 480px) { .confirmar-acciones .btn { flex: 1; } }
 .pie-personal { color: var(--texto-suave); font-size: 12.5px; }
 .tarjeta-pie .btn { white-space: nowrap; flex-shrink: 0; }
+button.sesion-nombre { background: none; border: none; color: inherit; font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; padding: 6px 8px; border-radius: 8px; }
+button.sesion-nombre:hover { background: rgba(255, 255, 255, .12); }
+.acceso-nota { color: var(--texto-suave); font-size: 13px; text-align: center; }
+#cuenta-datos { text-align: left; margin-bottom: 12px; }
+.cuenta-titulo { font-size: 19px; }

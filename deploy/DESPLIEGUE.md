@@ -90,7 +90,7 @@ sudo ufw allow 'Nginx Full' && sudo ufw allow OpenSSH && sudo ufw --force enable
 
 ## 7. Primer ingreso
 
-1. Abra `https://DOMINIO/admin` e ingrese con **admin / admin123**. **Cambie la clave de inmediato.**
+1. Abra `https://DOMINIO/admin` e ingrese con **admin1234@gmail.com** (o `admin`) / **admin123**. **Cambie la clave de inmediato.**
 2. En **Tasa BCV** pulse «Actualizar desde el BCV».
 3. Complete los **Métodos de pago** con sus datos reales y cargue sus rutas.
 

@@ -156,7 +156,7 @@ async function iniciarSesion(e) {
     const btnSubmit = document.getElementById("btn-login-submit");
 
     if (!usuario || !password) {
-        alertaTexto.textContent = "Ingresa tu usuario y contraseña";
+        alertaTexto.textContent = "Ingresa tu usuario o correo y tu contraseña";
         alerta.classList.remove("oculto");
         return;
     }

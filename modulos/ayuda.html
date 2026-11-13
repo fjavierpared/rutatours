@@ -27,7 +27,7 @@
             <li><a href="#m-clientes">Clientes</a></li>
             <li><a href="#m-tasa">Tasa BCV</a></li>
             <li><a href="#m-metodos">Métodos de pago</a></li>
-            <li><a href="#m-sistema">Usuarios y configuración</a></li>
+            <li><a href="#m-sistema">Usuarios, accesos y configuración</a></li>
             <li><a href="#m-portal">Portal del cliente</a></li>
             <li><a href="#m-faq">Preguntas frecuentes</a></li>
             <li><a href="#m-tecnico">Información técnica</a></li>
@@ -50,7 +50,7 @@
             <p>RutaTours organiza todo el ciclo de un plan turístico: se diseña la ruta con su recorrido y sus costos, el sistema calcula el precio, el cliente reserva desde internet, reporta sus pagos y el equipo los verifica.</p>
             <div class="manual-tarjetas">
                 <div><h4><svg class="icon"><use href="img/icons.svg#i-shield"></use></svg>Panel de administración</h4>
-                    <p>Para el equipo de la agencia. Dirección: <code>http://servidor:3000/admin</code>. Lo usan los <strong>administradores</strong> y <strong>operadores</strong>, con el mismo acceso a todos los módulos salvo <em>Usuarios</em> y <em>Configuración</em>, que son solo del administrador.</p></div>
+                    <p>Para el equipo de la agencia. Dirección: <code>http://servidor:3000/admin</code>. Lo usan los <strong>administradores</strong> y <strong>operadores</strong>, con el mismo acceso a todos los módulos salvo <em>Usuarios</em> y <em>Configuración</em>, que son solo del administrador. Ingresan con su <strong>correo</strong> (o su nombre de usuario en <code>/admin</code>).</p></div>
                 <div><h4><svg class="icon"><use href="img/icons.svg#i-users"></use></svg>Portal del cliente</h4>
                     <p>Para los viajeros. Es la página principal: <code>http://servidor:3000/</code>. El cliente ve los planes, calcula el precio, crea su cuenta, reserva y reporta pagos. Nunca ve costos internos ni la ganancia.</p></div>
             </div>
@@ -69,7 +69,7 @@
             <h2><span class="num">2</span>Primeros pasos</h2>
             <p>Antes de recibir reservas, configure el sistema en este orden:</p>
             <ol class="manual-pasos">
-                <li><strong>Cambie la clave del administrador.</strong> El sistema crea el usuario <code>admin</code> con clave <code>admin123</code> la primera vez. Cámbiela en <a href="#usuarios">Usuarios</a>.</li>
+                <li><strong>Cambie la clave del administrador.</strong> La primera vez el sistema crea el usuario <code>admin</code> con correo <code>admin1234@gmail.com</code> y clave <code>admin123</code>. En <a href="#usuarios">Usuarios</a> cámbiele la clave y, si quiere, el correo; después agregue a su equipo, cada uno con su propio correo.</li>
                 <li><strong>Revise la Configuración:</strong> nombre del sistema, colores y redondeo de precios.</li>
                 <li><strong>Cargue la tasa BCV</strong> en <a href="#tasa">Tasa BCV</a> con el botón «Actualizar desde el BCV».</li>
                 <li><strong>Complete los métodos de pago</strong> con sus datos reales (banco, teléfono, correo de Zelle...).</li>
@@ -218,6 +218,11 @@
         <section id="m-clientes">
             <h2><span class="num">9</span>Clientes</h2>
             <p>Los clientes se registran solos desde el portal. Aquí ve sus datos de contacto y cuántas reservas tienen. Desactivar a un cliente le impide iniciar sesión, pero conserva sus reservas.</p>
+            <ul>
+                <li><strong>Nuevo cliente:</strong> para quien reserva por teléfono o en la oficina. Complete sus datos; el sistema propone una <strong>clave temporal</strong> y, al registrar, muestra los datos listos para copiar y entregar (dirección, correo y clave).</li>
+                <li><strong>Restablecer clave</strong> (botón con la llave): si el cliente olvidó su clave, asígnele una temporal nueva y entréguesela.</li>
+                <li>El cliente ingresa en el catálogo con «Ingresar» y cambia la clave temporal en <strong>«Mi cuenta»</strong> (clic en su nombre, arriba a la derecha).</li>
+            </ul>
             <figure><img src="img/manual/clientes.jpg" alt="Listado de clientes"><figcaption>Clientes registrados en el portal.</figcaption></figure>
         </section>
 
@@ -242,8 +247,19 @@
 
         <!-- 12 -->
         <section id="m-sistema">
-            <h2><span class="num">12</span>Usuarios y configuración</h2>
-            <p><strong>Usuarios</strong> (solo administrador): cree cuentas para su equipo con rol <em>administrador</em> u <em>operador</em>, cambie claves o desactive el acceso.</p>
+            <h2><span class="num">12</span>Usuarios, accesos y configuración</h2>
+            <h3>Cómo se ingresa</h3>
+            <p>Hay <strong>un solo botón «Ingresar»</strong>, en el catálogo. El sistema reconoce el correo y decide a dónde va cada persona:</p>
+            <table class="manual-tabla">
+                <tr><th>Si el correo es de...</th><th>Entra a</th></tr>
+                <tr><td>Un usuario del equipo (administrador u operador)</td><td>El <strong>panel</strong> de administración</td></tr>
+                <tr><td>Un cliente</td><td>El <strong>portal</strong>: sus reservas y pagos</td></tr>
+            </table>
+            <p>El personal también puede entrar directo en <code>/admin</code> con su correo o su nombre de usuario.</p>
+            <div class="manual-nota"><svg class="icon"><use href="img/icons.svg#i-triangle-alert"></use></svg><p><strong>Un administrador (o cualquier usuario del equipo) debe tener un correo distinto al de cualquier cliente.</strong> Un mismo correo no puede ser de equipo y de cliente a la vez, porque el sistema no sabría a dónde llevarlo; si lo intenta, el sistema lo rechaza. Si alguien del equipo quiere reservar como cliente, debe registrarse con otro correo, por ejemplo el personal en lugar del de trabajo.</p></div>
+            <p><strong>Protección contra intentos:</strong> tras 5 claves erróneas seguidas con la misma cuenta, el ingreso se bloquea 15 minutos; desde una misma conexión, tras 20 intentos fallidos con cualquier cuenta. Pasado ese tiempo se puede intentar de nuevo.</p>
+            <h3>Usuarios y configuración</h3>
+            <p><strong>Usuarios</strong> (solo administrador): cree cuentas para su equipo con nombre, nombre de usuario, <strong>correo</strong> y rol <em>administrador</em> u <em>operador</em>; cambie claves o desactive el acceso. Un usuario sin correo aparece marcado en rojo: edítelo y agréguelo para que pueda ingresar con él.</p>
             <p><strong>Configuración</strong> (solo administrador): nombre del sistema, colores (se aplican también al portal del cliente) y el <strong>redondeo del precio por persona</strong>:</p>
             <ul>
                 <li><strong>Hacia arriba</strong> (recomendado): 89,175 $ → 89,20 $ con paso de 0,10 $.</li>
@@ -263,6 +279,7 @@
                 <li><strong>Reserva:</strong> elige la fecha (el sistema respeta anticipación, días de salida y temporada). Si no tiene cuenta, se registra y la reserva se completa sin perder lo elegido.</li>
                 <li><strong>Pago:</strong> elige el método, ve los datos para pagar y el monto exacto (Bs con la tasa del día o dólares con IGTF), escribe la referencia y adjunta el comprobante.</li>
                 <li><strong>Mis reservas:</strong> sigue el estado y el saldo de cada reserva. Puede cancelar mientras esté pendiente de abono.</li>
+                <li><strong>Mi cuenta:</strong> al hacer clic en su nombre puede cambiar su clave (por ejemplo, la temporal que le dio la agencia).</li>
             </ol>
             <div class="manual-galeria">
                 <figure><img src="img/manual/portal-catalogo.jpg" alt="Catálogo del portal"><figcaption>Catálogo.</figcaption></figure>
@@ -288,6 +305,12 @@
                 <p>El sitio del BCV a veces no responde o publica un certificado de seguridad incompleto. Use la carga manual con el valor publicado y vuelva a intentarlo más tarde.</p></details>
             <details><summary>No puedo activar una ruta.</summary>
                 <p>La sección «Estado de la ruta» del editor lista lo que falta: paradas, costos, guía, vehículo o un máximo de personas mayor que la capacidad del vehículo o de las habitaciones.</p></details>
+            <details><summary>Un cliente olvidó su clave.</summary>
+                <p>En Clientes, pulse la llave en su fila y asígnele una clave temporal. Entréguesela; el cliente la cambia en «Mi cuenta».</p></details>
+            <details><summary>Soy del equipo y también quiero reservar como cliente.</summary>
+                <p>Regístrese en el catálogo con un correo distinto al de su usuario del equipo. Con el correo de trabajo siempre entrará al panel.</p></details>
+            <details><summary>Me sale «Demasiados intentos fallidos».</summary>
+                <p>Es una protección: tras 5 claves erróneas se bloquea el ingreso de esa cuenta por 15 minutos. Espere y vuelva a intentar; si no recuerda la clave, pídala a un administrador (equipo) o a la agencia (clientes).</p></details>
             <details><summary>No puedo eliminar un guía, vehículo, ruta o método de pago.</summary>
                 <p>Tiene reservas o pagos asociados y se conservan como historial. Márquelo como inactivo.</p></details>
         </section>
@@ -300,7 +323,7 @@
                 <tr><td>Tecnología</td><td>Node.js 22 + Express 5, MySQL 8, HTML/CSS/JavaScript sin frameworks.</td></tr>
                 <tr><td>Iniciar</td><td><code>cd backend</code> y <code>npm start</code> (o <code>npm run dev</code> para reiniciar al guardar cambios). Detener con Ctrl + C.</td></tr>
                 <tr><td>Direcciones</td><td>Catálogo para los clientes: <code>http://localhost:3000/</code> · Panel del personal: <code>http://localhost:3000/admin</code>. El pie del catálogo tiene el enlace «Acceso del personal».</td></tr>
-                <tr><td>Configuración</td><td>Archivo <code>backend/.env</code>: credenciales de MySQL, puerto, secreto de sesiones y opciones del BCV.</td></tr>
+                <tr><td>Configuración</td><td>Archivo <code>backend/.env</code>: credenciales de MySQL, puerto, secreto de sesiones y opciones del BCV. <code>ADMIN_EMAIL</code> (opcional) define el correo del administrador inicial; por defecto <code>admin1234@gmail.com</code>.</td></tr>
                 <tr><td>Base de datos</td><td><code>backend/database/rutatours.sql</code> crea la base <code>rutatours</code> con todas sus tablas y, si está vacía, la ruta de ejemplo. Se puede ejecutar de nuevo sin duplicar datos.</td></tr>
                 <tr><td>Imágenes</td><td>Las fotos de rutas y comprobantes se guardan en la carpeta <code>uploads/</code>.</td></tr>
                 <tr><td>Respaldo</td><td><code>mysqldump -u USUARIO -p rutatours &gt; respaldo.sql</code> y una copia de <code>uploads/</code>. Hágalo a diario.</td></tr>

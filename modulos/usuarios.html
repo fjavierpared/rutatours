@@ -23,6 +23,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="usuario-email">Correo</label>
+                    <input type="email" id="usuario-email" maxlength="120" required placeholder="Ej.: jperez@agencia.com" autocomplete="off">
+                    <small class="ayuda-campo">Con este correo ingresa al sistema. Debe ser distinto al de cualquier cliente.</small>
+                </div>
+
+                <div class="form-group">
                     <label for="usuario-rol">Rol del usuario</label>
                     <select id="usuario-rol" required>
                         <option value="operador">Operador (Consulta y reportes)</option>
@@ -75,7 +81,7 @@
                         <tr>
                             <th class="col-num">N°</th>
                             <th>Nombre</th>
-                            <th>Usuario</th>
+                            <th>Usuario / correo</th>
                             <th>Rol</th>
                             <th>Estado</th>
                             <th class="col-acciones">Acciones</th>

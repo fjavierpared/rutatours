@@ -1,13 +1,14 @@
 const router = require('express').Router();
 const db = require('../db');
-const { httpError, textoRequerido, idValido } = require('../utils');
+const { httpError, textoRequerido, idValido, emailValido } = require('../utils');
 const { hashPassword } = require('../auth_helper');
+const { asegurarCorreoLibre } = require('../services/cuentas');
 
 // Montado en server.js con requiereSesion + requiereAdmin: req.usuario es el admin en sesión
 
 router.get('/', async (req, res) => {
     const [rows] = await db.query(`
-        SELECT id_usuario, nombre, usuario, rol, activo, creado_en, actualizado_en
+        SELECT id_usuario, nombre, usuario, email, rol, activo, creado_en, actualizado_en
         FROM usuario
         ORDER BY nombre
     `);
@@ -27,11 +28,13 @@ router.post('/', async (req, res) => {
     const rol = req.body.rol === 'operador' ? 'operador' : 'admin';
     const activo = req.body.activo === 0 || req.body.activo === false ? 0 : 1;
 
+    const email = emailValido(req.body.email, 'El correo', { requerido: true });
     await validarUsername(usuario);
+    await asegurarCorreoLibre(email);
     const hash = hashPassword(password);
     const [result] = await db.query(
-        'INSERT INTO usuario (nombre, usuario, password, rol, activo) VALUES (?, ?, ?, ?, ?)',
-        [nombre, usuario, hash, rol, activo]
+        'INSERT INTO usuario (nombre, usuario, email, password, rol, activo) VALUES (?, ?, ?, ?, ?, ?)',
+        [nombre, usuario, email, hash, rol, activo]
     );
     res.status(201).json({ id_usuario: result.insertId, message: 'Usuario creado exitosamente' });
 });
@@ -43,7 +46,9 @@ router.put('/:id', async (req, res) => {
     const rol = req.body.rol === 'operador' ? 'operador' : 'admin';
     const activo = req.body.activo === 0 || req.body.activo === false ? 0 : 1;
 
+    const email = emailValido(req.body.email, 'El correo', { requerido: true });
     await validarUsername(usuario, id);
+    await asegurarCorreoLibre(email, { idUsuario: id });
 
     const sesion = req.usuario;
     if (sesion.id_usuario === id && !activo) {
@@ -64,13 +69,13 @@ router.put('/:id', async (req, res) => {
     if (password) {
         const hash = hashPassword(password);
         await db.query(
-            'UPDATE usuario SET nombre = ?, usuario = ?, password = ?, rol = ?, activo = ? WHERE id_usuario = ?',
-            [nombre, usuario, hash, rol, activo, id]
+            'UPDATE usuario SET nombre = ?, usuario = ?, email = ?, password = ?, rol = ?, activo = ? WHERE id_usuario = ?',
+            [nombre, usuario, email, hash, rol, activo, id]
         );
     } else {
         await db.query(
-            'UPDATE usuario SET nombre = ?, usuario = ?, rol = ?, activo = ? WHERE id_usuario = ?',
-            [nombre, usuario, rol, activo, id]
+            'UPDATE usuario SET nombre = ?, usuario = ?, email = ?, rol = ?, activo = ? WHERE id_usuario = ?',
+            [nombre, usuario, email, rol, activo, id]
         );
     }
 

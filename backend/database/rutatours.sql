@@ -9,8 +9,8 @@
 -- y la ruta "Eje Panamericano 2D/1N"). Se puede ejecutar de nuevo sin duplicar
 -- datos ni borrar nada.
 --
--- El usuario administrador (admin / admin123) lo crea el servidor al iniciar por
--- primera vez si no hay usuarios. Cambie esa clave al ingresar.
+-- El usuario administrador (admin1234@gmail.com o "admin" / admin123) lo crea el
+-- servidor al iniciar por primera vez si no hay usuarios. Cambie esa clave al ingresar.
 --
 -- Usuario de MySQL para la aplicación (recomendado, ejecútelo aparte con su clave):
 --     CREATE USER 'rutatours'@'localhost' IDENTIFIED BY 'una_clave_segura';
@@ -53,13 +53,29 @@ CREATE TABLE IF NOT EXISTS usuario (
     id_usuario      INT AUTO_INCREMENT PRIMARY KEY,
     nombre          VARCHAR(100) NOT NULL,
     usuario         VARCHAR(50)  NOT NULL,
+    email           VARCHAR(120) NULL,        -- con él se ingresa; no puede ser el correo de un cliente
     password        VARCHAR(255) NOT NULL,
     rol             ENUM('admin', 'operador') NOT NULL DEFAULT 'operador',
     activo          TINYINT(1)   NOT NULL DEFAULT 1,
     creado_en       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     actualizado_en  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    UNIQUE KEY uq_usuario_login (usuario)
+    UNIQUE KEY uq_usuario_login (usuario),
+    UNIQUE KEY uq_usuario_email (email)
 ) ENGINE=InnoDB;
+
+-- Migración para bases instaladas antes de que los usuarios tuvieran correo
+DROP PROCEDURE IF EXISTS rutatours_migrar_usuario_email;
+DELIMITER $$
+CREATE PROCEDURE rutatours_migrar_usuario_email()
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+                 WHERE table_schema = DATABASE() AND table_name = 'usuario' AND column_name = 'email') THEN
+    ALTER TABLE usuario ADD COLUMN email VARCHAR(120) NULL AFTER usuario, ADD UNIQUE KEY uq_usuario_email (email);
+  END IF;
+END$$
+DELIMITER ;
+CALL rutatours_migrar_usuario_email();
+DROP PROCEDURE rutatours_migrar_usuario_email;
 
 INSERT IGNORE INTO configuracion (id) VALUES (1);
 

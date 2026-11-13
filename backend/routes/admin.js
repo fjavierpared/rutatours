@@ -6,6 +6,8 @@ const {
 } = require('../utils');
 const { resumenPagos, actualizarEstadoAgenda } = require('../services/pagos');
 const { tasaVigente } = require('../services/tasa');
+const { hashPassword } = require('../auth_helper');
+const { datosClienteNuevo, insertarCliente } = require('./clientes');
 
 // ---------- Resumen (módulo Inicio) ----------
 router.get('/resumen', async (req, res) => {
@@ -30,6 +32,21 @@ router.get('/clientes', async (req, res) => {
         FROM cliente c LEFT JOIN agenda a ON a.id_cliente = c.id_cliente
         GROUP BY c.id_cliente ORDER BY c.creado_en DESC`);
     res.json(rows);
+});
+
+// El personal registra a un cliente (reservas por teléfono u oficina) con una clave temporal
+router.post('/clientes', async (req, res) => {
+    const id = await insertarCliente(await datosClienteNuevo(req.body));
+    res.status(201).json({ id_cliente: id, message: 'Cliente registrado. Entréguele su correo y la clave temporal' });
+});
+
+router.patch('/clientes/:id/clave', async (req, res) => {
+    const id = idValido(req.params.id, 'El cliente');
+    const password = String(req.body.password || '');
+    if (password.length < 6) throw httpError(422, 'La clave temporal debe tener al menos 6 caracteres');
+    const [r] = await db.query('UPDATE cliente SET password = ? WHERE id_cliente = ?', [hashPassword(password), id]);
+    if (!r.affectedRows) throw httpError(404, 'El cliente no existe');
+    res.json({ message: 'Clave restablecida. Entréguesela al cliente para que la cambie al ingresar' });
 });
 
 router.patch('/clientes/:id', async (req, res) => {

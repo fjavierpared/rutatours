@@ -18,7 +18,7 @@ async function api(ruta, { method = "GET", body } = {}) {
     const datos = await res.json().catch(() => ({}));
     if (!res.ok) {
         // Sesión vencida o inválida: se cierra localmente y se pide ingresar de nuevo
-        if (res.status === 401 && token && !ruta.startsWith("/clientes/login")) {
+        if (res.status === 401 && token && !ruta.startsWith("/clientes/login") && !ruta.startsWith("/acceso") && !ruta.startsWith("/clientes/cambiar-clave")) {
             guardarSesion(null);
             if (typeof abrirAcceso === "function") abrirAcceso({ mensaje: "Su sesión expiró. Ingrese de nuevo." });
         }

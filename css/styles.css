@@ -751,3 +751,9 @@ label.btn { cursor: pointer; }
 .confirmar-dialogo.peligro .confirmar-aceptar { background: var(--peligro); color: #fff; }
 .confirmar-aceptar:hover { filter: brightness(1.08); }
 @media (max-width: 480px) { .confirmar-acciones .btn { flex: 1; } }
+
+/* Clientes: clave temporal y datos para entregar */
+.campo-con-boton { display: flex; gap: 8px; }
+.campo-con-boton input { flex: 1; font-family: ui-monospace, monospace; letter-spacing: .04em; }
+.credenciales { background: #f3f5f8; border: 1px dashed #cdd3da; border-radius: 8px; padding: 12px 14px; font-size: 14px; line-height: 1.6; white-space: pre-wrap; margin: 10px 0 4px; }
+#cliente-resultado h3 .icon { color: var(--ok); }

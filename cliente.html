@@ -53,6 +53,7 @@
                 <input type="password" name="password" required autocomplete="current-password">
             </label>
             <button type="submit" class="btn btn-primario btn-bloque">Ingresar</button>
+            <p class="acceso-nota">¿Es parte del equipo? Ingrese con su correo de trabajo y lo llevaremos al panel.</p>
         </form>
 
         <form id="form-registro" class="form oculto" autocomplete="on">
@@ -75,6 +76,29 @@
                 <small>Mínimo 6 caracteres.</small>
             </label>
             <button type="submit" class="btn btn-primario btn-bloque">Crear cuenta</button>
+        </form>
+    </dialog>
+
+    <!-- Mi cuenta: cambiar clave -->
+    <dialog class="dialogo" id="cuenta" aria-labelledby="cuenta-titulo">
+        <div class="dialogo-cabecera">
+            <h3 id="cuenta-titulo" class="cuenta-titulo">Mi cuenta</h3>
+            <button type="button" class="btn-icono" data-cerrar title="Cerrar"><svg class="icon"><use href="img/icons.svg#i-x"></use></svg></button>
+        </div>
+        <p class="acceso-nota" id="cuenta-datos"></p>
+        <form id="form-cuenta" class="form" autocomplete="off">
+            <label class="campo">Clave actual
+                <input type="password" name="password_actual" required autocomplete="current-password">
+                <small>Si la agencia le dio una clave temporal, escríbala aquí.</small>
+            </label>
+            <label class="campo">Nueva clave
+                <input type="password" name="password_nueva" required minlength="6" autocomplete="new-password">
+                <small>Mínimo 6 caracteres.</small>
+            </label>
+            <label class="campo">Repita la nueva clave
+                <input type="password" name="confirmar" required minlength="6" autocomplete="new-password">
+            </label>
+            <button type="submit" class="btn btn-primario btn-bloque">Cambiar clave</button>
         </form>
     </dialog>
 

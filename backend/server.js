@@ -5,6 +5,8 @@ const db = require('./db');
 const { hashPassword, requiereSesion, requiereAdmin, requiereCliente } = require('./auth_helper');
 
 const app = express();
+// Detrás de Cloudflare + nginx (red interna de Docker): req.ip es la IP real del visitante
+app.set('trust proxy', 'loopback, uniquelocal');
 // 5 MB: las imágenes (máx. 2 MB) llegan como base64 dentro del JSON
 app.use(express.json({ limit: '5mb' }));
 
@@ -39,7 +41,8 @@ app.use('/api/usuarios', requiereSesion, requiereAdmin, require('./routes/usuari
 // --- Públicas (catálogo y portal de clientes) ---
 app.use('/api/tasa-bcv', require('./routes/tasaBcv'));          // GET público; actualizar/manual/historial con sesión
 app.use('/api/rutas', require('./routes/catalogo'));            // /disponibles y /:id/calcular (antes del CRUD)
-app.use('/api/clientes', require('./routes/clientes'));         // register, login, perfil
+app.use('/api/clientes', require('./routes/clientes'));
+app.use('/api/acceso', require('./routes/acceso'));                  // ingreso unificado por correo         // register, login, perfil
 
 // --- Solo CLIENTES (token tipo 'cliente') ---
 app.use('/api/agendas', requiereCliente, require('./routes/agendas'));
@@ -64,19 +67,42 @@ app.use((err, req, res, next) => {
 // ==========================================
 const PORT = process.env.PORT || 3000;
 
-// Si no existe ningún usuario, crea admin / admin123 para el primer ingreso
+// Correo del administrador inicial (se puede cambiar luego desde Usuarios)
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'admin1234@gmail.com').toLowerCase();
+
+// Cambios de estructura en bases ya instaladas (se aplican solos al iniciar)
+async function migraciones() {
+    const [[{ n }]] = await db.query(`SELECT COUNT(*) AS n FROM information_schema.columns
+        WHERE table_schema = DATABASE() AND table_name = 'usuario' AND column_name = 'email'`);
+    if (!n) {
+        await db.query('ALTER TABLE usuario ADD COLUMN email VARCHAR(120) NULL AFTER usuario, ADD UNIQUE KEY uq_usuario_email (email)');
+        console.log('🛠️  Migración: columna usuario.email agregada');
+    }
+}
+
+// Si no existe ningún usuario, crea admin / admin123 para el primer ingreso.
+// Si el usuario "admin" no tiene correo, se le asigna ADMIN_EMAIL (si nadie más lo usa).
 async function crearAdminInicial() {
     const [[{ total }]] = await db.query('SELECT COUNT(*) AS total FROM usuario');
-    if (total > 0) return;
-    await db.query(
-        "INSERT INTO usuario (nombre, usuario, password, rol, activo) VALUES ('Administrador', 'admin', ?, 'admin', 1)",
-        [hashPassword('admin123')]
-    );
-    console.log('👤 Usuario inicial creado: admin / admin123 (cámbielo al ingresar)');
+    if (total === 0) {
+        await db.query(
+            "INSERT INTO usuario (nombre, usuario, email, password, rol, activo) VALUES ('Administrador', 'admin', ?, ?, 'admin', 1)",
+            [ADMIN_EMAIL, hashPassword('admin123')]
+        );
+        console.log(`👤 Usuario inicial creado: ${ADMIN_EMAIL} (o "admin") / admin123 (cámbiela al ingresar)`);
+        return;
+    }
+    const [[enUso]] = await db.query(
+        'SELECT (SELECT COUNT(*) FROM usuario WHERE email = ?) + (SELECT COUNT(*) FROM cliente WHERE email = ?) AS n', [ADMIN_EMAIL, ADMIN_EMAIL]);
+    if (!enUso.n) {
+        const [r] = await db.query("UPDATE usuario SET email = ? WHERE usuario = 'admin' AND email IS NULL", [ADMIN_EMAIL]);
+        if (r.affectedRows) console.log(`👤 Correo del usuario admin: ${ADMIN_EMAIL}`);
+    }
 }
 
 db.query('SELECT 1')
     .then(() => console.log('✅ Conectado a MySQL - Base de datos:', process.env.DB_NAME))
+    .then(migraciones)
     .then(crearAdminInicial)
     .catch(err => console.error('❌ Error de base de datos:', err.message));
 

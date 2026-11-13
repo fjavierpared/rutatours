@@ -1,28 +1,30 @@
 const router = require('express').Router();
 const db = require('../db');
 const { httpError, textoRequerido } = require('../utils');
-const { verificarPassword, generarToken, hashPassword, requiereSesion } = require('../auth_helper');
+const { verificarPassword, hashPassword, requiereSesion } = require('../auth_helper');
+const { sesionUsuario, controlIngreso } = require('../services/cuentas');
 
+// Ingreso al panel (/admin) con nombre de usuario O correo
 router.post('/login', async (req, res) => {
-    const usuario = textoRequerido(req.body.usuario, 'El usuario', 50).toLowerCase();
+    const usuario = textoRequerido(req.body.usuario, 'El usuario o correo', 120).toLowerCase();
     const password = String(req.body.password || '');
     if (!password) throw httpError(422, 'La contraseña es obligatoria');
+    const control = controlIngreso(req, usuario);
 
     const [[u]] = await db.query(
-        'SELECT id_usuario, nombre, usuario, password, rol, activo FROM usuario WHERE usuario = ?',
-        [usuario]
+        'SELECT id_usuario, nombre, usuario, email, password, rol, activo FROM usuario WHERE usuario = ? OR email = ?',
+        [usuario, usuario]
     );
 
-    if (!u || !verificarPassword(password, u.password)) throw httpError(401, 'Usuario o contraseña incorrectos');
+    if (!u || !verificarPassword(password, u.password)) { control.fallo(); throw httpError(401, 'Usuario o contraseña incorrectos'); }
     if (!u.activo) throw httpError(403, 'El usuario se encuentra inactivo. Consulte al administrador');
-
-    const infoUsuario = { id_usuario: u.id_usuario, nombre: u.nombre, usuario: u.usuario, rol: u.rol };
-    res.json({ message: 'Inicio de sesión exitoso', token: generarToken({ ...infoUsuario, tipo: 'usuario' }), usuario: infoUsuario });
+    control.exito();
+    res.json({ message: 'Inicio de sesión exitoso', ...sesionUsuario(u) });
 });
 
 router.get('/perfil', requiereSesion, async (req, res) => {
     const [[u]] = await db.query(
-        'SELECT id_usuario, nombre, usuario, rol, activo FROM usuario WHERE id_usuario = ?',
+        'SELECT id_usuario, nombre, usuario, email, rol, activo FROM usuario WHERE id_usuario = ?',
         [req.usuario.id_usuario]
     );
     if (!u || !u.activo) throw httpError(401, 'Usuario no encontrado o inactivo');

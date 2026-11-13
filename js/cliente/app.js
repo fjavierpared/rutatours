@@ -59,7 +59,7 @@ async function navegar() {
 function pintarCabecera() {
     const c = window.clienteSesion;
     document.getElementById("sesion").innerHTML = c
-        ? `<span class="sesion-nombre" title="${esc(c.email)}">${icono("user-round")}<span>${esc(c.nombre.split(" ")[0])}</span></span>
+        ? `<button type="button" class="sesion-nombre" id="btn-cuenta" title="Mi cuenta · ${esc(c.email)}">${icono("user-round")}<span>${esc(c.nombre.split(" ")[0])}</span></button>
            <button type="button" class="btn btn-fantasma btn-chico" id="btn-salir">Salir</button>`
         : `<button type="button" class="btn btn-primario btn-chico" data-abrir-acceso>Ingresar</button>`;
 }
@@ -105,8 +105,16 @@ async function enviarAcceso(e, ruta) {
     try {
         boton.disabled = true;
         const r = await api(ruta, { method: "POST", body: datos });
-        guardarSesion(r);
         form.reset();
+        // Correo del equipo: se abre el panel con su sesión (mismas claves que usa el panel)
+        if (r.tipo === "usuario") {
+            localStorage.setItem("token_sesion", r.token);
+            localStorage.setItem("usuario_sesion", JSON.stringify(r.usuario));
+            aviso(`Bienvenido(a), ${r.usuario.nombre}. Abriendo el panel...`);
+            setTimeout(() => { location.href = "/admin"; }, 600);
+            return;
+        }
+        guardarSesion(r);
         document.getElementById("acceso").close();
         aviso(ruta.includes("register") ? `¡Cuenta creada! Bienvenido(a), ${r.cliente.nombre}` : `Bienvenido(a), ${r.cliente.nombre}`);
         const accion = accionTrasAcceso;
@@ -133,12 +141,40 @@ async function verificarSesionGuardada() {
     } catch { /* api() ya cerró la sesión si el token venció */ }
 }
 
+// ---------- Mi cuenta: cambiar clave ----------
+
+function abrirCuenta() {
+    const c = window.clienteSesion;
+    if (!c) return;
+    document.getElementById("cuenta-datos").textContent = `${c.nombre} · ${c.email}`;
+    document.getElementById("form-cuenta").reset();
+    document.getElementById("cuenta").showModal();
+}
+
+async function cambiarClaveCliente(e) {
+    e.preventDefault();
+    const f = e.target;
+    if (f.password_nueva.value !== f.confirmar.value) return aviso("La nueva clave y su confirmación no coinciden", "error");
+    const boton = f.querySelector("button[type=submit]");
+    try {
+        boton.disabled = true;
+        const r = await api("/clientes/cambiar-clave", { method: "POST", body: { password_actual: f.password_actual.value, password_nueva: f.password_nueva.value } });
+        aviso(r.message);
+        document.getElementById("cuenta").close();
+    } catch (error) {
+        aviso(error.message, "error");
+    } finally {
+        boton.disabled = false;
+    }
+}
+
 // ---------- Inicio ----------
 
 window.addEventListener("hashchange", navegar);
 
 document.addEventListener("click", async e => {
     if (e.target.closest("[data-abrir-acceso]")) abrirAcceso({ pestana: e.target.closest("[data-abrir-acceso]").dataset.abrirAcceso || "ingresar" });
+    if (e.target.closest("#btn-cuenta")) abrirCuenta();
     if (e.target.closest("#btn-salir") && await confirmar("¿Desea cerrar su sesión?", { titulo: "Cerrar sesión", aceptar: "Cerrar sesión" })) {
         guardarSesion(null);
         aviso("Sesión cerrada");
@@ -155,8 +191,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         if (p) cambiarPestana(p.dataset.pestana);
     });
     dialogo.addEventListener("close", () => { accionTrasAcceso = null; });
-    document.getElementById("form-ingresar").addEventListener("submit", e => enviarAcceso(e, "/clientes/login"));
+    document.getElementById("form-ingresar").addEventListener("submit", e => enviarAcceso(e, "/acceso"));
     document.getElementById("form-registro").addEventListener("submit", e => enviarAcceso(e, "/clientes/register"));
+    const cuenta = document.getElementById("cuenta");
+    cuenta.addEventListener("click", e => { if (e.target === cuenta || e.target.closest("[data-cerrar]")) cuenta.close(); });
+    document.getElementById("form-cuenta").addEventListener("submit", cambiarClaveCliente);
 
     pintarCabecera();
     await cargarSistema();

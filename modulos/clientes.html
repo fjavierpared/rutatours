@@ -11,6 +11,7 @@
                 <input type="text" id="clientes-filtro" placeholder="Buscar por nombre, documento, correo o teléfono...">
             </div>
             <div class="contador-pill" id="clientes-contador">Cargando...</div>
+            <button type="button" class="btn btn-primary" id="clientes-nuevo"><svg class="icon"><use href="img/icons.svg#i-user-plus"></use></svg>Nuevo cliente</button>
         </div>
         <div class="tabla-contenedor">
             <table class="tabla-lista" id="clientes-tabla">
@@ -30,3 +31,70 @@
         </div>
     </section>
 </div>
+
+<!-- Registrar cliente desde el panel -->
+<dialog class="dialogo" id="cliente-dialogo" aria-labelledby="cliente-dialogo-titulo">
+    <form id="cliente-form" autocomplete="off">
+        <h3 id="cliente-dialogo-titulo"><svg class="icon"><use href="img/icons.svg#i-user-plus"></use></svg>Nuevo cliente</h3>
+        <p class="ayuda">Para quien reserva por teléfono o en la oficina. Con su correo y la clave temporal ingresa en el catálogo, y desde «Mi cuenta» puede cambiarla.</p>
+        <div class="form-group">
+            <label for="cliente-nombre">Nombre y apellido</label>
+            <input type="text" id="cliente-nombre" name="nombre" maxlength="100" required>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="cliente-documento">Cédula o pasaporte</label>
+                <input type="text" id="cliente-documento" name="documento" maxlength="20" required placeholder="V-12345678">
+            </div>
+            <div class="form-group">
+                <label for="cliente-telefono">Teléfono</label>
+                <input type="tel" id="cliente-telefono" name="telefono" maxlength="30" placeholder="0414-1234567">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="cliente-email">Correo</label>
+            <input type="email" id="cliente-email" name="email" maxlength="120" required>
+            <small class="ayuda-campo">No puede ser el correo de un usuario del equipo.</small>
+        </div>
+        <div class="form-group">
+            <label for="cliente-clave">Clave temporal</label>
+            <div class="campo-con-boton">
+                <input type="text" id="cliente-clave" name="password" minlength="6" maxlength="60" required>
+                <button type="button" class="btn btn-secundario btn-chico" data-generar="cliente-clave"><svg class="icon"><use href="img/icons.svg#i-refresh-cw"></use></svg>Generar</button>
+            </div>
+        </div>
+        <div class="form-acciones">
+            <button type="button" class="btn btn-secundario" data-cerrar>Cancelar</button>
+            <button type="submit" class="btn btn-success"><svg class="icon"><use href="img/icons.svg#i-save"></use></svg>Registrar cliente</button>
+        </div>
+    </form>
+
+    <div id="cliente-resultado" class="oculto">
+        <h3><svg class="icon"><use href="img/icons.svg#i-circle-check"></use></svg><span id="cliente-resultado-titulo">Cliente registrado</span></h3>
+        <p class="ayuda">Entregue estos datos al cliente. Ingresa en el catálogo con «Ingresar».</p>
+        <pre class="credenciales" id="cliente-credenciales"></pre>
+        <div class="form-acciones">
+            <button type="button" class="btn btn-secundario" id="cliente-copiar"><svg class="icon"><use href="img/icons.svg#i-copy"></use></svg>Copiar datos</button>
+            <button type="button" class="btn btn-primary" data-cerrar>Listo</button>
+        </div>
+    </div>
+</dialog>
+
+<!-- Restablecer clave de un cliente -->
+<dialog class="dialogo" id="clave-dialogo" aria-labelledby="clave-dialogo-titulo">
+    <form id="clave-form" autocomplete="off">
+        <h3 id="clave-dialogo-titulo"><svg class="icon"><use href="img/icons.svg#i-key"></use></svg>Restablecer clave</h3>
+        <p class="ayuda" id="clave-cliente"></p>
+        <div class="form-group">
+            <label for="clave-nueva">Nueva clave temporal</label>
+            <div class="campo-con-boton">
+                <input type="text" id="clave-nueva" minlength="6" maxlength="60" required>
+                <button type="button" class="btn btn-secundario btn-chico" data-generar="clave-nueva"><svg class="icon"><use href="img/icons.svg#i-refresh-cw"></use></svg>Generar</button>
+            </div>
+        </div>
+        <div class="form-acciones">
+            <button type="button" class="btn btn-secundario" data-cerrar>Cancelar</button>
+            <button type="submit" class="btn btn-success"><svg class="icon"><use href="img/icons.svg#i-key"></use></svg>Restablecer</button>
+        </div>
+    </form>
+</dialog>

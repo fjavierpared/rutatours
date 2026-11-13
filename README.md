@@ -33,8 +33,10 @@ cd backend && npm install && npm start
 ```
 
 - Catálogo: http://localhost:3000/
-- Panel: http://localhost:3000/admin — usuario **admin**, clave **admin123** (se crea al primer
-  inicio si no hay usuarios; cámbiela al ingresar).
+- Panel: http://localhost:3000/admin — correo **admin1234@gmail.com** (o usuario **admin**), clave **admin123**
+  (se crea al primer inicio si no hay usuarios; cámbiela al ingresar).
+- Un solo «Ingresar» en el catálogo: con el correo de un usuario del equipo abre el panel; con el de un
+  cliente, el portal. Un correo no puede ser de equipo y de cliente a la vez.
 
 `npm test` ejecuta las pruebas del cálculo de precios y las reglas de reserva.
 `npm run dev` reinicia el servidor al guardar cambios.

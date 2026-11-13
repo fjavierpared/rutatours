@@ -80,7 +80,7 @@ El contenedor `certbot` ya renueva los certificados cada 12 horas.
 
 ## 7. Primer ingreso
 
-`https://rutatours.venustechfp.com/admin` → **admin / admin123** → cambie la clave de inmediato.
+`https://rutatours.venustechfp.com/admin` → **admin1234@gmail.com** (o `admin`) / **admin123** → cambie la clave de inmediato.
 Luego actualice la tasa BCV y complete los métodos de pago.
 
 ## Actualizar

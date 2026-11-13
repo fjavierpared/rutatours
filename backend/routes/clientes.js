@@ -2,34 +2,56 @@
 const router = require('express').Router();
 const db = require('../db');
 const { httpError, textoRequerido, textoOpcional, emailValido, duplicado } = require('../utils');
-const { hashPassword, verificarPassword, generarToken, requiereCliente } = require('../auth_helper');
+const { hashPassword, verificarPassword, requiereCliente } = require('../auth_helper');
+const { sesionCliente, asegurarCorreoLibre, controlIngreso } = require('../services/cuentas');
 
-function sesionCliente(c) {
-    const info = { id_cliente: c.id_cliente, nombre: c.nombre, email: c.email };
-    return { token: generarToken({ ...info, tipo: 'cliente' }), cliente: info };
+/** Datos de un cliente nuevo (registro desde el portal o desde el panel). */
+async function datosClienteNuevo(b) {
+    const datos = {
+        nombre: textoRequerido(b.nombre, 'El nombre', 100),
+        documento: textoRequerido(b.documento, 'La cédula o pasaporte', 20).toUpperCase(),
+        email: emailValido(b.email, 'El correo', { requerido: true }),
+        telefono: textoOpcional(b.telefono, 'El teléfono', 30)
+    };
+    const password = String(b.password || '');
+    if (password.length < 6) throw httpError(422, 'La contraseña debe tener al menos 6 caracteres');
+    await asegurarCorreoLibre(datos.email);
+    return { ...datos, password: hashPassword(password) };
+}
+
+async function insertarCliente(datos) {
+    const [r] = await db.query('INSERT INTO cliente SET ?', [datos])
+        .catch(err => duplicado(err, 'Ya existe una cuenta con ese correo o documento'));
+    return r.insertId;
 }
 
 router.post('/register', async (req, res) => {
-    const datos = {
-        nombre: textoRequerido(req.body.nombre, 'El nombre', 100),
-        documento: textoRequerido(req.body.documento, 'La cédula o pasaporte', 20).toUpperCase(),
-        email: emailValido(req.body.email, 'El correo', { requerido: true }),
-        telefono: textoOpcional(req.body.telefono, 'El teléfono', 30)
-    };
-    const password = String(req.body.password || '');
-    if (password.length < 6) throw httpError(422, 'La contraseña debe tener al menos 6 caracteres');
-
-    const [r] = await db.query('INSERT INTO cliente SET ?', [{ ...datos, password: hashPassword(password) }])
-        .catch(err => duplicado(err, 'Ya existe una cuenta con ese correo o documento. Inicie sesión'));
-    res.status(201).json({ message: 'Cuenta creada', ...sesionCliente({ id_cliente: r.insertId, ...datos }) });
+    const datos = await datosClienteNuevo(req.body);
+    const id = await insertarCliente(datos);
+    res.status(201).json({ message: 'Cuenta creada', ...sesionCliente({ id_cliente: id, ...datos }) });
 });
 
+// Se conserva por compatibilidad; el portal usa POST /api/acceso (ingreso unificado)
 router.post('/login', async (req, res) => {
     const email = emailValido(req.body.email, 'El correo', { requerido: true });
+    const control = controlIngreso(req, email);
     const [[c]] = await db.query('SELECT id_cliente, nombre, email, password, activo FROM cliente WHERE email = ?', [email]);
-    if (!c || !verificarPassword(String(req.body.password || ''), c.password)) throw httpError(401, 'Correo o contraseña incorrectos');
+    if (!c || !verificarPassword(String(req.body.password || ''), c.password)) { control.fallo(); throw httpError(401, 'Correo o contraseña incorrectos'); }
     if (!c.activo) throw httpError(403, 'Su cuenta está inactiva. Contáctenos');
+    control.exito();
     res.json({ message: 'Bienvenido(a)', ...sesionCliente(c) });
+});
+
+// El cliente cambia su clave (Ej.: la temporal que le dio la agencia)
+router.post('/cambiar-clave', requiereCliente, async (req, res) => {
+    const actual = String(req.body.password_actual || '');
+    const nueva = String(req.body.password_nueva || '');
+    if (!actual || !nueva) throw httpError(422, 'Indique la contraseña actual y la nueva');
+    if (nueva.length < 6) throw httpError(422, 'La nueva contraseña debe tener al menos 6 caracteres');
+    const [[c]] = await db.query('SELECT password FROM cliente WHERE id_cliente = ?', [req.cliente.id_cliente]);
+    if (!c || !verificarPassword(actual, c.password)) throw httpError(400, 'La contraseña actual no es correcta');
+    await db.query('UPDATE cliente SET password = ? WHERE id_cliente = ?', [hashPassword(nueva), req.cliente.id_cliente]);
+    res.json({ message: 'Contraseña actualizada' });
 });
 
 router.get('/perfil', requiereCliente, async (req, res) => {
@@ -40,3 +62,5 @@ router.get('/perfil', requiereCliente, async (req, res) => {
 });
 
 module.exports = router;
+module.exports.datosClienteNuevo = datosClienteNuevo;
+module.exports.insertarCliente = insertarCliente;

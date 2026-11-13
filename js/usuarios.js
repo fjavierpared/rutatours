@@ -31,7 +31,8 @@ function renderizarTablaUsuarios() {
 
     const filtrados = usuariosActuales.filter(u =>
         u.nombre.toLowerCase().includes(filtro) ||
-        u.usuario.toLowerCase().includes(filtro)
+        u.usuario.toLowerCase().includes(filtro) ||
+        (u.email || "").toLowerCase().includes(filtro)
     );
 
     actualizarContadorUsuarios(filtrados.length, usuariosActuales.length);
@@ -68,7 +69,7 @@ function renderizarTablaUsuarios() {
                         </div>
                     </div>
                 </td>
-                <td><code>@${esc(u.usuario)}</code></td>
+                <td><div class="celda-item-texto"><code>@${esc(u.usuario)}</code><small class="celda-subtexto">${u.email ? esc(u.email) : '<span class="error-texto">Sin correo: edítelo para que pueda ingresar con él</span>'}</small></div></td>
                 <td>${badgeRol}</td>
                 <td>${badgeEstado}</td>
                 <td class="col-acciones">
@@ -96,6 +97,7 @@ async function guardarUsuario(e) {
     const id = document.getElementById("usuario-id").value;
     const nombre = document.getElementById("usuario-nombre").value;
     const usuario = document.getElementById("usuario-login").value;
+    const email = document.getElementById("usuario-email").value.trim();
     const rol = document.getElementById("usuario-rol").value;
     const password = document.getElementById("usuario-password").value;
     const activo = Number(document.getElementById("usuario-activo").value);
@@ -107,7 +109,7 @@ async function guardarUsuario(e) {
 
     try {
         btnSubmit.disabled = true;
-        const payload = { nombre, usuario, rol, activo };
+        const payload = { nombre, usuario, email, rol, activo };
         if (password) payload.password = password;
 
         const r = await api(id ? `/usuarios/${id}` : "/usuarios", {
@@ -143,6 +145,7 @@ async function accionUsuario(e) {
         document.getElementById("usuario-id").value = usuario.id_usuario;
         document.getElementById("usuario-nombre").value = usuario.nombre;
         document.getElementById("usuario-login").value = usuario.usuario;
+        document.getElementById("usuario-email").value = usuario.email || "";
         document.getElementById("usuario-rol").value = usuario.rol;
         document.getElementById("usuario-activo").value = usuario.activo ? "1" : "0";
         document.getElementById("usuario-password").value = "";
