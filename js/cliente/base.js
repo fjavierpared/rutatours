@@ -126,6 +126,8 @@ function aplicarTema(t) {
     raiz.setProperty("--sobre-primary", textoSobre(t.color_primario));
     raiz.setProperty("--sobre-secondary", textoSobre(t.color_secundario));
     raiz.setProperty("--sobre-acento", textoSobre(t.color_acento));
+    // Color de la barra del navegador en el celular
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", t.color_primario);
     try { localStorage.setItem("tema_cliente", JSON.stringify(t)); } catch { /* sin almacenamiento */ }
 }
 

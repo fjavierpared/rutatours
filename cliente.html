@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f4c5c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>RutaTours · Planes turísticos</title>
     <meta name="description" content="Planes turísticos en grupo privado: elija su ruta, calcule el precio y reserve en línea.">
     <link rel="stylesheet" href="css/cliente.css">
@@ -16,9 +19,9 @@
                 <span id="nombre-sistema">RutaTours</span>
             </a>
             <nav class="nav" aria-label="Principal">
-                <a href="#catalogo" data-vista="catalogo">Planes</a>
-                <a href="#reservas" data-vista="reservas">Mis reservas</a>
-                <a href="#ayuda" data-vista="ayuda">¿Cómo funciona?</a>
+                <a href="#catalogo" data-vista="catalogo"><svg class="icon"><use href="img/icons.svg#i-layout-grid"></use></svg><span>Planes</span></a>
+                <a href="#reservas" data-vista="reservas"><svg class="icon"><use href="img/icons.svg#i-calendar-check"></use></svg><span>Mis reservas</span></a>
+                <a href="#ayuda" data-vista="ayuda"><svg class="icon"><use href="img/icons.svg#i-help-circle"></use></svg><span class="nav-largo">¿Cómo funciona?</span><span class="nav-corto">Ayuda</span></a>
             </nav>
             <div class="sesion" id="sesion"></div>
         </div>

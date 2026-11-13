@@ -632,7 +632,7 @@ async function tablaPreciosRuta() {
             .then(c => ({ n, c })).catch(error => ({ n, error }))));
     destino.innerHTML = `
         <div class="tabla-contenedor">
-            <table class="tabla-lista">
+            <table class="tabla-lista tabla-scroll">
                 <thead><tr><th class="num">Personas</th><th class="num">Costo p/p</th><th class="num">Precio p/p</th><th class="num">Total grupo</th><th class="num">Abono</th><th class="num">P/p en divisas</th></tr></thead>
                 <tbody>${resultados.map(({ n, c, error }) => error
                     ? `<tr><td class="num">${n}</td><td colspan="5" class="error-texto">${esc(error.message)}</td></tr>`

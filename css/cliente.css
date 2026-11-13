@@ -24,9 +24,10 @@ code { font-family: ui-monospace, monospace; font-size: .92em; }
 .marca-icono { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: var(--acento); color: var(--sobre-acento); }
 .nav { display: flex; gap: 4px; flex: 1; overflow-x: auto; scrollbar-width: none; }
 .nav::-webkit-scrollbar { display: none; }
-.nav a { color: inherit; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 14.5px; opacity: .82; white-space: nowrap; }
+.nav a { display: inline-flex; align-items: center; gap: 6px; color: inherit; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 14.5px; opacity: .82; white-space: nowrap; }
 .nav a:hover { opacity: 1; background: rgba(255, 255, 255, .08); }
 .nav a.activa { opacity: 1; background: rgba(255, 255, 255, .16); }
+.nav a .icon, .nav-corto { display: none; }
 .sesion { display: flex; align-items: center; gap: 8px; }
 .sesion-nombre { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 14px; }
 
@@ -67,7 +68,7 @@ h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.01em
 .hero-datos { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
 .hero .chip { background: rgba(255, 255, 255, .14); border-color: transparent; color: inherit; }
 .hero .chip .icon { color: inherit; }
-.tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 20px; }
 .tarjeta { display: flex; flex-direction: column; background: var(--superficie); border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra); border: 1px solid var(--borde); color: inherit; text-decoration: none; transition: transform .15s, box-shadow .15s; }
 .tarjeta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16, 24, 40, .12); }
 .tarjeta-imagen { position: relative; aspect-ratio: 16 / 10; background: #e7ecef; display: grid; place-items: center; }
@@ -116,7 +117,7 @@ h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.01em
 .itinerario small { display: block; color: var(--texto-suave); font-size: 12.5px; }
 .itinerario p { color: var(--texto-suave); font-size: 14px; margin-top: 2px; }
 .etiqueta { display: inline-block; margin-left: 6px; font-size: 11.5px; font-weight: 650; color: var(--texto-suave); background: #eef1f4; padding: 1px 7px; border-radius: 5px; vertical-align: 1px; }
-.detalles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+.detalles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 18px; }
 .detalle h3 { display: flex; align-items: center; gap: 6px; font-size: 15px; margin-bottom: 8px; }
 .detalle ul { list-style: none; display: grid; gap: 6px; font-size: 14.5px; }
 .detalle li { padding-left: 18px; position: relative; }
@@ -155,7 +156,7 @@ h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.01em
 .calc-resultado { display: grid; gap: 8px; }
 
 /* --- Reservas --- */
-.lista-reservas { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.lista-reservas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 16px; }
 .reserva { display: grid; gap: 8px; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 18px; box-shadow: var(--sombra); color: inherit; text-decoration: none; transition: border-color .15s; }
 .reserva:hover { border-color: var(--secondary); }
 .reserva-inactiva { opacity: .65; }
@@ -172,11 +173,11 @@ h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.01em
 .aviso-paso { display: flex; gap: 10px; align-items: flex-start; padding: 12px 16px; border-radius: 12px; margin-bottom: 18px; font-weight: 600; background: var(--aviso-suave); color: var(--aviso); }
 .aviso-paso.estado-reservada, .aviso-paso.estado-pagada { background: var(--ok-suave); color: var(--ok); }
 .aviso-paso.estado-cancelada, .aviso-paso.estado-completada { background: #eef1f4; color: var(--texto-suave); }
-.datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 12px; }
 .datos dt { font-size: 12.5px; color: var(--texto-suave); }
 .datos dd { font-weight: 600; }
 .datos dd::first-letter { text-transform: uppercase; }
-.resumen-pagos { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; padding: 12px 14px; border-radius: 12px; background: #f6f8f9; margin-bottom: 12px; }
+.resumen-pagos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr)); gap: 10px; padding: 12px 14px; border-radius: 12px; background: #f6f8f9; margin-bottom: 12px; }
 .resumen-pagos > div { display: grid; }
 .resumen-pagos small { color: var(--texto-suave); font-size: 12.5px; }
 .resumen-pagos strong { font-size: 17px; }
@@ -210,7 +211,7 @@ h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.01em
 
 /* --- ¿Cómo funciona? --- */
 .vista > .bloque + .bloque { margin-top: 18px; }
-.pasos { list-style: none; counter-reset: paso; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.pasos { list-style: none; counter-reset: paso; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px; }
 .pasos li { counter-increment: paso; display: grid; align-content: start; gap: 4px; padding: 14px; border-radius: 12px; background: #f6f8f9; }
 .pasos li::before { content: counter(paso); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--secondary); color: var(--sobre-secondary); font-weight: 750; margin-bottom: 4px; }
 .pasos span { color: var(--texto-suave); font-size: 14px; }
@@ -251,11 +252,8 @@ h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.01em
     .ficha { grid-template-columns: 1fr; }
     .ficha-lateral { position: static; }
 }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
     body { font-size: 15px; }
-    .cabecera-fila { flex-wrap: wrap; gap: 4px 12px; padding-top: 8px; }
-    .nav { order: 3; flex-basis: 100%; margin: 0 -8px; padding-bottom: 6px; }
-    .sesion { margin-left: auto; }
     .sesion-nombre span { max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .tarjetas, .lista-reservas { grid-template-columns: 1fr; }
     .bloque, .panel-reserva { padding: 16px; }
@@ -301,3 +299,103 @@ button.sesion-nombre:hover { background: rgba(255, 255, 255, .12); }
 .acceso-nota { color: var(--texto-suave); font-size: 13px; text-align: center; }
 #cuenta-datos { text-align: left; margin-bottom: 12px; }
 .cuenta-titulo { font-size: 19px; }
+
+/* ==========================================
+   RESPONSIVO: tablets y celulares
+   Celulares (≤640px): menú como barra inferior con iconos (estilo app), diálogos desde abajo.
+   Celulares chicos de 4" a 4.7" (≤380px): todo más compacto.
+   ========================================== */
+body { min-height: 100dvh; }
+.contenedor { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+.cabecera { padding-top: env(safe-area-inset-top); }
+.pie-fila { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+.marca { min-width: 0; }
+#nombre-sistema { overflow: hidden; text-overflow: ellipsis; }
+a, button { -webkit-tap-highlight-color: transparent; }
+
+@media (pointer: coarse) {
+    .btn-icono { width: 40px; height: 40px; }
+    .chip { min-height: 36px; }
+    .tarjeta:hover { transform: none; }
+}
+
+/* Tablets verticales: la ficha en una columna con la calculadora más ancha */
+@media (min-width: 641px) and (max-width: 900px) {
+    .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lista-reservas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+    :root { --alto-nav: 62px; }
+    body { padding-bottom: calc(var(--alto-nav) + env(safe-area-inset-bottom)); }
+    .cabecera-fila { min-height: 56px; gap: 10px; }
+    .marca { flex: 1; font-size: 17px; }
+    .sesion { flex-shrink: 0; }
+
+    /* Barra de navegación inferior */
+    .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; flex: none;
+        background: var(--superficie); color: var(--texto-suave); border-top: 1px solid var(--borde); box-shadow: 0 -4px 18px rgba(16, 24, 40, .08);
+        padding: 5px max(6px, env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left)); overflow: visible; }
+    .nav a { flex-direction: column; justify-content: center; gap: 3px; min-height: calc(var(--alto-nav) - 10px); padding: 4px; border-radius: 12px;
+        font-size: 12px; font-weight: 650; opacity: 1; color: var(--texto-suave); }
+    .nav a .icon { display: block; width: 23px; height: 23px; }
+    .nav a:hover { background: none; }
+    .nav a.activa { background: color-mix(in srgb, var(--secondary) 12%, transparent); color: var(--secondary); }
+    .nav-largo { display: none; }
+    .nav-corto { display: inline; }
+
+    .vista { padding-top: 18px; padding-bottom: 32px; }
+    .hero { border-radius: 16px; margin-bottom: 20px; }
+    .hero p { font-size: 15.5px; }
+    .tarjetas { gap: 14px; }
+    .tarjeta-pie { flex-wrap: wrap; }
+    .ficha { gap: 16px; }
+    .ficha-principal { gap: 16px; }
+    .ficha-descripcion { font-size: 15.5px; }
+    .galeria-principal { border-radius: 12px; }
+    .resumen-pagos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .titulo-vista .btn { flex: 1 1 auto; }
+
+    /* Botón flotante y avisos por encima de la barra inferior */
+    .ir-reservar { bottom: calc(var(--alto-nav) + env(safe-area-inset-bottom) + 12px); }
+    .toast { bottom: calc(var(--alto-nav) + env(safe-area-inset-bottom) + 12px); }
+    .ficha-lateral, #panel-reserva { scroll-margin-top: 72px; }
+
+    /* Diálogos: hoja que sube desde abajo */
+    .dialogo, .confirmar-dialogo { width: 100%; max-width: 100%; max-height: 92dvh; margin: auto 0 0; overflow-y: auto; border-radius: 20px 20px 0 0;
+        padding: 20px max(18px, env(safe-area-inset-right)) max(22px, calc(env(safe-area-inset-bottom) + 12px)) max(18px, env(safe-area-inset-left));
+        overscroll-behavior: contain; }
+    .dialogo[open] { animation: hojaSube .25s ease-out; }
+    .pestanas { flex: 1; }
+    .pestana { flex: 1; }
+    .confirmar-acciones .btn { flex: 1; }
+}
+@keyframes hojaSube { from { transform: translateY(40px); opacity: .4; } to { transform: none; opacity: 1; } }
+
+@media (max-width: 380px) {
+    body { font-size: 14.5px; }
+    .contenedor { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+    .marca { font-size: 16px; gap: 8px; }
+    .marca-icono { width: 30px; height: 30px; }
+    .sesion .btn-chico { padding: 7px 10px; }
+    .sesion-nombre span { max-width: 70px; }
+    .hero { padding: 20px 18px; }
+    .tarjeta-cuerpo { padding: 14px; }
+    .tarjeta-precio strong { font-size: 20px; }
+    .tarjeta-pie .btn { flex: 1; }
+    .bloque, .panel-reserva { padding: 14px; }
+    .precio-destacado strong { font-size: 28px; }
+    .itinerario li { grid-template-columns: 58px 1fr; gap: 8px; }
+    .tabla-precio { font-size: 13px; }
+    .resumen-pagos { grid-template-columns: 1fr; }
+    .nav a { font-size: 11.5px; }
+    .ir-reservar { padding: 12px 18px; font-size: 14.5px; }
+}
+
+/* Celular acostado: barra inferior más baja */
+@media (max-height: 500px) and (max-width: 940px) and (orientation: landscape) {
+    .ir-reservar { bottom: calc(12px + env(safe-area-inset-bottom)); }
+    .dialogo, .confirmar-dialogo { max-height: 96dvh; }
+}
+/* Foco visible con el color de marca (en vez del contorno negro del navegador) */
+.pestana:focus-visible, .nav a:focus-visible, .btn:focus-visible, .chip:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }

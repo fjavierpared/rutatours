@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#003366">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>RutaTours</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/diagrama.css">
@@ -55,13 +58,14 @@
 
     <!-- APLICACIÓN PRINCIPAL -->
     <div id="app-root" style="display:flex; width:100%; min-height:100vh;">
-        <nav class="sidebar">
+        <nav class="sidebar" id="menu-lateral" aria-label="Menú principal">
             <div class="sidebar-header">
                 <div class="marca-icono"><svg class="icon"><use href="img/icons.svg#i-map"></use></svg></div>
                 <div>
                     <h3 id="nombre-sistema">RutaTours</h3>
                     <p>Panel de gestión</p>
                 </div>
+                <button type="button" class="btn-cerrar-menu" id="btn-cerrar-menu" aria-label="Cerrar menú"><svg class="icon"><use href="img/icons.svg#i-x"></use></svg></button>
             </div>
             <ul class="sidebar-menu">
                 <li><a href="#inicio" data-modulo="inicio"><svg class="icon"><use href="img/icons.svg#i-house"></use></svg>Inicio</a></li>
@@ -82,9 +86,11 @@
                 <li><a href="#ayuda" data-modulo="ayuda"><svg class="icon"><use href="img/icons.svg#i-help-circle"></use></svg>Ayuda</a></li>
             </ul>
         </nav>
+        <div class="menu-fondo" id="menu-fondo" hidden></div>
         <main class="main">
             <header class="top-bar">
-                <div>
+                <button type="button" class="btn-menu" id="btn-menu" aria-label="Abrir menú" aria-controls="menu-lateral" aria-expanded="false"><svg class="icon"><use href="img/icons.svg#i-menu"></use></svg></button>
+                <div class="top-bar-titulo">
                     <h2 id="titulo-modulo">Inicio</h2>
                     <p id="subtitulo-modulo" class="subtitulo"></p>
                 </div>
@@ -135,6 +141,7 @@
     <script src="js/tasa.js"></script>
     <script src="js/metodos.js"></script>
     <script src="js/ayuda.js"></script>
+    <script src="js/responsivo.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
