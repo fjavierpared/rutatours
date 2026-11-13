@@ -75,7 +75,8 @@ function renderizarTablaUsuarios() {
                 <td class="col-acciones">
                     <button class="btn-icono" data-accion="editar" data-id="${u.id_usuario}" title="Editar usuario">${icono("pencil")}</button>
                     ${!esPropio ? `
-                        <button class="btn-icono peligro" data-accion="eliminar" data-id="${u.id_usuario}" title="Eliminar usuario">${icono("trash-2")}</button>
+                        <button class="btn-icono ${u.activo ? "peligro" : "exito"}" data-accion="estado" data-id="${u.id_usuario}" title="${u.activo ? "Desactivar" : "Activar"}">${icono(u.activo ? "ban" : "circle-check")}</button>
+                        ${esAdmin ? "" : `<button class="btn-icono peligro" data-accion="eliminar" data-id="${u.id_usuario}" title="Eliminar usuario">${icono("trash-2")}</button>`}
                     ` : ""}
                 </td>
             </tr>`;
@@ -154,7 +155,17 @@ async function accionUsuario(e) {
         document.getElementById("usuario-submit").innerHTML = `${icono("save")}Actualizar usuario`;
         document.getElementById("usuario-cancelar").classList.remove("oculto");
         document.getElementById("usuario-nombre").focus();
-    } else if (await confirmar(`¿Eliminar al usuario "${usuario.nombre}" (@${usuario.usuario})?`, { titulo: "Eliminar usuario", aceptar: "Eliminar", peligro: true })) {
+    } else if (boton.dataset.accion === "estado") {
+        const desactivar = !!usuario.activo;
+        if (desactivar && !(await confirmar(`${usuario.nombre} (@${usuario.usuario}) no podrá ingresar al panel y su sesión abierta se cerrará. Puede reactivarlo cuando quiera.`,
+            { titulo: "Desactivar usuario", aceptar: "Desactivar", peligro: true }))) return;
+        try {
+            aviso((await api(`/usuarios/${usuario.id_usuario}/estado`, { method: "PATCH", body: { activo: desactivar ? 0 : 1 } })).message);
+            await cargarUsuarios();
+        } catch (error) {
+            aviso(error.message, "error");
+        }
+    } else if (boton.dataset.accion === "eliminar" && usuario.rol !== "admin" && await confirmar(`¿Eliminar al usuario "${usuario.nombre}" (@${usuario.usuario})?`, { titulo: "Eliminar usuario", aceptar: "Eliminar", peligro: true })) {
         try {
             aviso((await api(`/usuarios/${usuario.id_usuario}`, { method: "DELETE" })).message);
             await cargarUsuarios();

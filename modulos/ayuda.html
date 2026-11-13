@@ -217,7 +217,7 @@
         <!-- 9 -->
         <section id="m-clientes">
             <h2><span class="num">9</span>Clientes</h2>
-            <p>Los clientes se registran solos desde el portal. Aquí ve sus datos de contacto y cuántas reservas tienen. Desactivar a un cliente le impide iniciar sesión, pero conserva sus reservas.</p>
+            <p>Los clientes se registran solos desde el portal. Aquí ve sus datos de contacto y cuántas reservas tienen. Los clientes <strong>no se eliminan</strong>, para no perder su historial de reservas y pagos: un <strong>administrador</strong> puede desactivarlo, lo que le impide iniciar sesión (y cierra la que tenga abierta) pero conserva sus reservas.</p>
             <ul>
                 <li><strong>Nuevo cliente:</strong> para quien reserva por teléfono o en la oficina. Complete sus datos; el sistema propone una <strong>clave temporal</strong> y, al registrar, muestra los datos listos para copiar y entregar (dirección, correo y clave).</li>
                 <li><strong>Restablecer clave</strong> (botón con la llave): si el cliente olvidó su clave, asígnele una temporal nueva y entréguesela.</li>
@@ -259,7 +259,7 @@
             <div class="manual-nota"><svg class="icon"><use href="img/icons.svg#i-triangle-alert"></use></svg><p><strong>Un administrador (o cualquier usuario del equipo) debe tener un correo distinto al de cualquier cliente.</strong> Un mismo correo no puede ser de equipo y de cliente a la vez, porque el sistema no sabría a dónde llevarlo; si lo intenta, el sistema lo rechaza. Si alguien del equipo quiere reservar como cliente, debe registrarse con otro correo, por ejemplo el personal en lugar del de trabajo.</p></div>
             <p><strong>Protección contra intentos:</strong> tras 5 claves erróneas seguidas con la misma cuenta, el ingreso se bloquea 15 minutos; desde una misma conexión, tras 20 intentos fallidos con cualquier cuenta. Pasado ese tiempo se puede intentar de nuevo.</p>
             <h3>Usuarios y configuración</h3>
-            <p><strong>Usuarios</strong> (solo administrador): cree cuentas para su equipo con nombre, nombre de usuario, <strong>correo</strong> y rol <em>administrador</em> u <em>operador</em>; cambie claves o desactive el acceso. Un usuario sin correo aparece marcado en rojo: edítelo y agréguelo para que pueda ingresar con él.</p>
+            <p><strong>Usuarios</strong> (solo administrador): cree cuentas para su equipo con nombre, nombre de usuario, <strong>correo</strong> y rol <em>administrador</em> u <em>operador</em>; cambie claves o desactive el acceso con el botón <em>Desactivar</em> de cada fila. <strong>Los administradores no se pueden eliminar</strong>: si alguien ya no debe entrar, otro administrador lo desactiva (nadie puede desactivarse a sí mismo y siempre debe quedar al menos un administrador activo). Solo los operadores se pueden eliminar. Al desactivar a alguien, su sesión abierta se cierra de inmediato. Un usuario sin correo aparece marcado en rojo: edítelo y agréguelo para que pueda ingresar con él.</p>
             <p><strong>Configuración</strong> (solo administrador): nombre del sistema, colores (se aplican también al portal del cliente) y el <strong>redondeo del precio por persona</strong>:</p>
             <ul>
                 <li><strong>Hacia arriba</strong> (recomendado): 89,175 $ → 89,20 $ con paso de 0,10 $.</li>

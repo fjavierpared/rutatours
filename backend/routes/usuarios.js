@@ -82,21 +82,36 @@ router.put('/:id', async (req, res) => {
     res.json({ message: 'Usuario actualizado exitosamente' });
 });
 
+// Activar o desactivar (solo admins, montado con requiereAdmin). Es la única forma de dar de baja a un administrador.
+router.patch('/:id/estado', async (req, res) => {
+    const id = idValido(req.params.id, 'El usuario');
+    const activo = req.body.activo === 0 || req.body.activo === false ? 0 : 1;
+    if (req.usuario.id_usuario === id && !activo) throw httpError(400, 'No puedes desactivar tu propio usuario: debe hacerlo otro administrador');
+
+    const [[target]] = await db.query('SELECT rol FROM usuario WHERE id_usuario = ?', [id]);
+    if (!target) throw httpError(404, 'El usuario no existe');
+    if (target.rol === 'admin' && !activo) {
+        const [[{ otros }]] = await db.query("SELECT COUNT(*) AS otros FROM usuario WHERE rol = 'admin' AND activo = 1 AND id_usuario <> ?", [id]);
+        if (otros === 0) throw httpError(400, 'Debe existir al menos un administrador activo en el sistema');
+    }
+    await db.query('UPDATE usuario SET activo = ? WHERE id_usuario = ?', [activo, id]);
+    res.json({ message: activo ? 'Usuario activado' : 'Usuario desactivado: ya no puede ingresar al panel' });
+});
+
+// Solo se eliminan operadores. Los administradores no se borran: otro administrador los desactiva.
 router.delete('/:id', async (req, res) => {
     const id = idValido(req.params.id, 'El usuario');
-    const sesion = req.usuario;
-    if (sesion.id_usuario === id) {
+    if (req.usuario.id_usuario === id) {
         throw httpError(400, 'No puedes eliminar tu propio usuario en sesión');
     }
 
-    const [[{ totalAdmins }]] = await db.query("SELECT COUNT(*) AS totalAdmins FROM usuario WHERE rol = 'admin' AND activo = 1 AND id_usuario <> ?", [id]);
     const [[target]] = await db.query('SELECT rol FROM usuario WHERE id_usuario = ?', [id]);
-    if (target?.rol === 'admin' && totalAdmins === 0) {
-        throw httpError(400, 'No se puede eliminar: debe existir al menos un administrador activo en el sistema');
+    if (!target) throw httpError(404, 'El usuario no existe');
+    if (target.rol === 'admin') {
+        throw httpError(403, 'Los administradores no se pueden eliminar. Si ya no debe tener acceso, desactívelo');
     }
 
-    const [result] = await db.query('DELETE FROM usuario WHERE id_usuario = ?', [id]);
-    if (!result.affectedRows) throw httpError(404, 'El usuario no existe');
+    await db.query('DELETE FROM usuario WHERE id_usuario = ?', [id]);
     res.json({ message: 'Usuario eliminado exitosamente' });
 });
 

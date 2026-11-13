@@ -6,7 +6,7 @@ const {
 } = require('../utils');
 const { resumenPagos, actualizarEstadoAgenda } = require('../services/pagos');
 const { tasaVigente } = require('../services/tasa');
-const { hashPassword } = require('../auth_helper');
+const { hashPassword, requiereAdmin } = require('../auth_helper');
 const { datosClienteNuevo, insertarCliente } = require('./clientes');
 
 // ---------- Resumen (módulo Inicio) ----------
@@ -49,7 +49,8 @@ router.patch('/clientes/:id/clave', async (req, res) => {
     res.json({ message: 'Clave restablecida. Entréguesela al cliente para que la cambie al ingresar' });
 });
 
-router.patch('/clientes/:id', async (req, res) => {
+// Los clientes no se eliminan (conservan su historial de reservas y pagos): solo un administrador los desactiva
+router.patch('/clientes/:id', requiereAdmin, async (req, res) => {
     const id = idValido(req.params.id, 'El cliente');
     const [r] = await db.query('UPDATE cliente SET activo = ? WHERE id_cliente = ?', [bool(req.body.activo), id]);
     if (!r.affectedRows) throw httpError(404, 'El cliente no existe');

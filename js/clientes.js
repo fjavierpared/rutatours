@@ -53,7 +53,7 @@ function pintarClientes() {
             <td>${c.activo ? `<span class="badge badge-ok">Activo</span>` : `<span class="badge badge-off">Inactivo</span>`}</td>
             <td class="col-acciones">
                 <button class="btn-icono" data-accion="clave" data-id="${c.id_cliente}" title="Restablecer clave">${icono("key")}</button>
-                <button class="btn-icono ${c.activo ? "peligro" : "exito"}" data-accion="estado" data-id="${c.id_cliente}" title="${c.activo ? "Desactivar" : "Activar"}">${icono(c.activo ? "ban" : "circle-check")}</button>
+                ${window.usuarioSesion?.rol === "admin" ? `<button class="btn-icono ${c.activo ? "peligro" : "exito"}" data-accion="estado" data-id="${c.id_cliente}" title="${c.activo ? "Desactivar" : "Activar"}">${icono(c.activo ? "ban" : "circle-check")}</button>` : ""}
             </td>
         </tr>`).join("");
 }

@@ -1,5 +1,7 @@
 const crypto = require('crypto');
 const { httpError } = require('./utils');
+// Carga diferida: así las pruebas que solo usan hash/token no abren la conexión a MySQL
+const db = () => require('./db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'plantilla_secreto_cambiar_en_env';
 if (!process.env.JWT_SECRET) console.warn('⚠️  JWT_SECRET no definido en .env: se usa un secreto por defecto');
@@ -56,18 +58,25 @@ function tokenDeLaPeticion(req) {
     return verificarToken(auth.startsWith('Bearer ') ? auth.slice(7) : null);
 }
 
+// El token no basta: se confirma en la base que la cuenta siga existiendo y activa, para que
+// desactivar a alguien corte su sesión al instante (y no a los 7 días, cuando vence el token).
+
 // Exige token válido de USUARIO del sistema; deja los datos de la sesión en req.usuario
-function requiereSesion(req, res, next) {
+async function requiereSesion(req, res, next) {
     const payload = tokenDeLaPeticion(req);
     if (!payload || payload.tipo !== 'usuario') return next(httpError(401, 'Sesión inválida o expirada'));
-    req.usuario = payload;
+    const [[u]] = await db().query('SELECT rol, activo FROM usuario WHERE id_usuario = ?', [payload.id_usuario]);
+    if (!u || !u.activo) return next(httpError(401, 'Su usuario está inactivo o ya no existe'));
+    req.usuario = { ...payload, rol: u.rol }; // el rol vigente, por si un admin lo cambió
     next();
 }
 
 // Exige token válido de CLIENTE; deja los datos en req.cliente
-function requiereCliente(req, res, next) {
+async function requiereCliente(req, res, next) {
     const payload = tokenDeLaPeticion(req);
     if (!payload || payload.tipo !== 'cliente') return next(httpError(401, 'Inicie sesión como cliente para continuar'));
+    const [[c]] = await db().query('SELECT activo FROM cliente WHERE id_cliente = ?', [payload.id_cliente]);
+    if (!c || !c.activo) return next(httpError(401, 'Su cuenta está inactiva. Contáctenos'));
     req.cliente = payload;
     next();
 }
