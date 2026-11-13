@@ -2,6 +2,9 @@
 FROM node:22-alpine
 
 WORKDIR /app
+
+# Zonas horarias para TZ (America/Caracas)
+RUN apk add --no-cache tzdata
 ENV NODE_ENV=production
 
 # Dependencias primero (se reutiliza la capa mientras package-lock no cambie)
